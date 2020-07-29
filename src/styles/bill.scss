@@ -1,0 +1,14 @@
+.bill-card {
+    height: 120px;
+    border: 1px solid #f4f4f5;
+}
+.draft-detail-bottom-button{
+    width: calc(100% - #{$sideBarWidth});
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    background: #ffffff;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}

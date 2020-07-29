@@ -1,0 +1,77 @@
+<template>
+  <el-card v-if="detail.draftReviewVO" class="my-card">
+    <h3>开票信息（登记哈希：{{ detail.draftReviewVO.draftHash }}）</h3>
+    <el-row :gutter="20" class="m-b-20">
+      <el-col :span="8">
+        <span class="display-inline-b width-150 ft-size-12 font-gray-color">申请通过时间：</span>
+        <span class="ft-size-12">{{ detail.draftReviewVO.draftAcceptTime }}</span>
+      </el-col>
+      <el-col :span="8">
+        <span class="display-inline-b width-150 ft-size-12 font-gray-color">汇票到期时间：</span>
+        <span class="ft-size-12">{{ detail.draftReviewVO.expireDate }}</span>
+      </el-col>
+      <el-col :span="8">
+        <span class="display-inline-b width-150 ft-size-12 font-gray-color">审核保贴日利率：</span>
+        <span class="ft-size-12">{{ detail.draftReviewVO.rate }}</span>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20" class="m-b-20">
+      <el-col :span="8">
+        <span class="display-inline-b width-150 ft-size-12 font-gray-color">可贴现TOKEN合约：</span>
+        <span class="ft-size-12">{{ detail.draftReviewVO.tokenContractUrl }}</span>
+      </el-col>
+      <el-col :span="8">
+        <span class="display-inline-b width-150 ft-size-12 font-gray-color">合同登记哈希：</span>
+        <span class="ft-size-12">{{ detail.draftReviewVO.contractHash }}</span>
+      </el-col>
+      <el-col :span="8">
+        <span class="display-inline-b width-150 ft-size-12 font-gray-color">商票登记哈希：</span>
+        <span class="ft-size-12">{{ detail.draftReviewVO.draftHash }}</span>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20" class="m-b-20">
+      <el-col :span="8">
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">可贴现TOKEN初始ID：</span>
+        <span class="ft-size-14">{{ detail.draftReviewVO.initialToken }}</span>
+        <span class="ft-size-14 primary-color m-l-10 cursor-pointer">查看贴现记录</span>
+      </el-col>
+      <el-col :span="8">
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">保理机构业务员：</span>
+        <span class="ft-size-14">{{ detail.draftReviewVO.name }}</span>
+      </el-col>
+      <el-col :span="8">
+        <span class="display-inline-b width-150 ft-size-12 font-gray-color">保理机构联系方式：</span>
+        <span class="ft-size-12">{{ detail.draftReviewVO.managerPhone }}</span>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+      <el-col :span="8">
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">保理机构:</span>
+        <span class="ft-size-14">{{ detail.draftReviewVO.name }}</span>
+      </el-col>
+      <el-col :span="8">
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">保理机构账号：</span>
+        <span class="ft-size-14">{{ detail.draftReviewVO.accountNumber }}</span>
+      </el-col>
+      <el-col :span="8">
+        <span class="display-inline-b width-150 ft-size-12 font-gray-color">保理机构开户行：</span>
+        <span class="ft-size-12">{{ detail.draftReviewVO.bankAddress }}</span>
+      </el-col>
+    </el-row>
+  </el-card>
+</template>
+
+<script>
+export default {
+  props: {
+    detail: {
+      type: Object,
+      default: () => {}
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>

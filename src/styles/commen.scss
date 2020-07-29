@@ -1,0 +1,204 @@
+$primaryColor: #1d7bef;
+$fontColor: #041831;
+$fontGrayColor: #788089;
+$grayColor: #a0acba;
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-around {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.flex-center-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%
+}
+
+.flex-between-s {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.flex-start {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.flex-align-center {
+    display: flex;
+    align-items: center;
+}
+
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.flex-start-col {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.flex-start-col-width {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.ft-size-14 {
+    font-size: 14px;
+}
+
+.ft-size-12 {
+    font-size: 12px;
+}
+
+.ft-size-18 {
+    font-size: 18px;
+}
+
+.ft-size-24 {
+    font-size: 24px;
+}
+
+.ft-size-56 {
+    font-size: 56px;
+}
+
+.font-weight{
+    font-weight: bold;
+}
+
+.m-t-20 {
+    margin-top: 20px;
+}
+
+.m-b-20 {
+    margin-bottom: 20px;
+}
+
+.m-l-10 {
+    margin-left: 10px !important;
+}
+
+.m-r-10 {
+    margin-right: 10px !important;
+}
+
+.m-l-30 {
+    margin-left: 30px !important;
+}
+
+.m-t-10 {
+    margin-top: 10px;
+}
+
+.my-card {
+    margin: 20px 10px;
+}
+
+.display-inline-b {
+    display: inline-block;
+}
+
+.width-150 {
+    width: 150px;
+}
+
+.width-115 {
+    width: 115px;
+}
+
+.width-100{
+    width: 100%;
+}
+
+.font-gray-color {
+    color: $fontGrayColor;
+}
+
+.divider-line {
+    height: 1px;
+    width: 100%;
+    background: #EBEEF5;
+}
+
+.primary-color {
+    color: $primaryColor;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.border-gray {
+    border: 1px dashed #cccccc;
+    border-radius: 5px;
+    padding: 10px 25px;
+}
+
+.line-height-25 {
+    line-height: 25px;
+}
+
+.ft-size-28 {
+    font-size: 28px;
+}
+
+.ft-size-14 {
+    font-size: 14px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.tetx-left {
+    text-align: left;
+}
+
+.color-success {
+    color: #67C23A;
+}
+
+.color-primary {
+    color: $primaryColor;
+}
+
+.color-error{
+    color: #F56C6C;
+}
