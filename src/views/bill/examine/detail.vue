@@ -24,17 +24,25 @@
         审核备注：{{ noPassComment }}
       </div>
     </el-card>
-    <el-card v-if="active===5&&!unpass" class="flex-column-center my-card text-center" body-style="width: 100%">
-      <div class="m-b-20">
-        <i class="el-icon-success ft-size-56 font-weight color-success" />
+    <div v-if="active===5&&!unpass" class="flex-center my-card p-y-40" body-style="width: 100%">
+      <div class="m-r-60">
+        <img src="../../../assets/images/draft_success_img.png" alt="">
       </div>
-      <div class="ft-size-18 font-weight m-b-20">
-        开票成功
+      <div>
+        <div class="flex-start">
+          <img src="../../../assets/images/draft_success.png" alt="">
+          <div class="m-l-10 m-b-10">开票信息登记成功</div>
+        </div>
+        <div class="flex-start">
+          <img src="../../../assets/images/draft_pending.png" alt="">
+          <div class="m-l-10 m-b-10 m-t-10">正在发行区块链通证……</div>
+        </div>
+        <div class="flex-start">
+          <img src="../../../assets/images/draft_loading.png" alt="">
+          <div class="m-l-10 m-t-10">等待将通证发送至商票转让者……</div>
+        </div>
       </div>
-      <div class="ft-size-12 m-b-20">
-        企业的开票申请已经通过
-      </div>
-    </el-card>
+    </div>
     <!-- <el-card v-if="active===4&&!unpass" class="flex-column-center my-card" body-style="width: 100%;" style="background: #E8EFF7">
       <div class="flex-start">
         <i class="el-icon-info ft-size-20 font-weight color-primary m-r-30" />

@@ -1,6 +1,7 @@
 <template>
   <el-card v-if="detail.remitterVO" class="my-card">
-    <h3>贴现转账信息</h3>
+    <div class="draft-detail-title">贴现转账信息</div>
+    <div class="draft-detail-line" />
     <el-row :gutter="20" class="m-b-20">
       <el-col :span="8">
         <span class="display-inline-b width-150 ft-size-14 font-gray-color">我方贴现金额：</span>

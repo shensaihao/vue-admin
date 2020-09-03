@@ -148,6 +148,12 @@ export const constantRoutes = [
         name: 'Enterprise',
         component: () => import('@/views/quota/index'),
         meta: { title: '受信企业列表', icon: 'form' }
+      },
+      /* 不添加meta，只为渲染菜单，不展示页面及路由 */
+      {
+        path: '/undefined',
+        name: 'undefined',
+        component: () => {}
       }
     ]
   },

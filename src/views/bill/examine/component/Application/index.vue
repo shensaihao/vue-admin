@@ -1,6 +1,7 @@
 <template>
   <el-card v-if="detail.applyInfoVO" class="my-card" :body-style="{padding: '0 20px 20px 20px'}">
-    <h3>申请信息（编号:1234561123)</h3>
+    <div class="draft-detail-title">申请信息（编号:{{ detail.applyInfoVO.id }}）</div>
+    <div class="draft-detail-line" />
     <el-row :gutter="20" class="m-b-20">
       <el-col :span="8">
         <span class="display-inline-b width-150 ft-size-14 font-gray-color">申请开票额度：</span>

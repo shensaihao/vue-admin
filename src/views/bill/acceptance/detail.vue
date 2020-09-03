@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading">
-    <el-card class="my-card">
+    <!-- <el-card class="my-card">
       <el-row :gutter="20">
         <el-col :span="6">
           <div class="flex-center-col bill-card">
@@ -27,7 +27,7 @@
           </div>
         </el-col>
       </el-row>
-    </el-card>
+    </el-card> -->
     <Remittance :detail="examineDetailInfo" />
     <Invoice :detail="examineDetailInfo" />
     <Application :detail="examineDetailInfo" />

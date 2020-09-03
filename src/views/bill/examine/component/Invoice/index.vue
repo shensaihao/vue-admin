@@ -1,7 +1,8 @@
 <template>
   <div>
     <el-card v-if="detail.draftReviewVO" class="my-card" :body-style="{padding: '0 20px 20px 20px'}">
-      <h3>开票信息（登记哈希：{{ detail.draftReviewVO.draftHash }}）</h3>
+      <div class="draft-detail-title">开票信息（登记哈希：{{ detail.draftReviewVO.draftHash }}）</div>
+      <div class="draft-detail-line" />
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-12 font-gray-color">申请通过时间：</span>

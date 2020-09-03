@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table key="examine" v-loading="loading" :data="data" style="width: 100%">
+    <el-table key="examine" v-loading="loading" :data="data" style="width: 100%" :header-cell-style="headClass">
       <el-table-column prop="id" label="申请编号" align="center" />
       <el-table-column prop="applicationCreateTime" label="申请时间" align="center">
         <template slot-scope="scope">
@@ -58,6 +58,9 @@ export default {
     }
   },
   methods: {
+    headClass() {
+      return 'background: #F9FAFC;'
+    },
     getDate(time) {
       if (time) {
         return dayjs(time).format('YYYY-MM-DD')

@@ -17,7 +17,7 @@
         <el-col :span="6">
           <div class="flex-center-col bill-card">
             <div>日利率</div>
-            <div>{{ discountDetailInfo.draftReviewVO.total }}</div>
+            <div>{{ discountDetailInfo.discountInfoVO.interestRate }}</div>
           </div>
         </el-col>
         <el-col :span="6">

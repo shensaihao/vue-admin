@@ -1,9 +1,8 @@
 <template>
   <div>
     <el-card v-if="detail.contractInfoVO" class="my-card">
-      <div slot="header" class="clearfix">
-        <span>合同信息</span>
-      </div>
+      <div class="draft-detail-title">合同信息</div>
+      <div class="draft-detail-line" />
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-12 font-gray-color">合同名称：</span>

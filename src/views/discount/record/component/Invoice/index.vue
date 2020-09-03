@@ -1,7 +1,8 @@
 <template>
   <div>
     <el-card v-if="detail.remitterVO" class="my-card">
-      <h3>贴现转账信息</h3>
+      <div class="draft-detail-title">贴现转账信息</div>
+      <div class="draft-detail-line" />
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-12 font-gray-color">我方贴现金额</span>
@@ -32,7 +33,8 @@
       </el-row>
     </el-card>
     <el-card v-if="detail.discountInfoVO" class="my-card">
-      <h3>贴现申请信息（编号:{{ detail.discountInfoVO.id }})</h3>
+      <div class="draft-detail-title">贴现申请信息（编号:{{ detail.discountInfoVO.id }})</div>
+      <div class="draft-detail-line" />
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-14 font-gray-color">申请贴现的tokenID：</span>
@@ -63,7 +65,8 @@
       </el-row>
     </el-card>
     <el-card v-if="detail.tokenInfoVO" class="my-card">
-      <h3>Token流转记录（商票登记哈希：{{ detail.draftReviewVO.draftHash }}）</h3>
+      <div class="draft-detail-title">Token流转记录（商票登记哈希：{{ detail.draftReviewVO.draftHash }}）</div>
+      <div class="draft-detail-line" />
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-14 font-gray-color">初始tokenID：</span>
@@ -94,8 +97,9 @@
       </el-row>
     </el-card>
     <el-card v-if="detail.draftReviewVO" class="my-card">
-      <h3 class="display-inline-b">开票信息（登记哈希：{{ detail.draftReviewVO.contractHash }}）</h3>
+      <div class="draft-detail-title display-inline-b">开票信息（登记哈希：{{ detail.draftReviewVO.contractHash }}）</div>
       <span class="ft-size-12 primary-color cursor-pointer display-inline-b" @click="previewComplate(detail.draftReviewVO.draftId)">查看完整信息</span>
+      <div class="draft-detail-line" />
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-12 font-gray-color">申请通过时间：</span>

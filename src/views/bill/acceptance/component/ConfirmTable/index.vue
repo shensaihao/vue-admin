@@ -13,35 +13,7 @@
       <el-table-column prop="drawerName" label="商票签发企业" align="center" />
       <el-table-column prop="draweeName" label="商票转让企业" align="center" />
       <el-table-column prop="acceptedAmount" sortable label="承兑金额" align="center" />
-      <el-table-column prop="acceptanceStatus" label="票据状态" align="center">
-        <template slot="header">
-          <el-popover
-            placement="bottom"
-            width="140"
-          >
-            <div>
-              <input v-model="acceptanceStatusCheckList" type="checkbox" value="all" @change="handelFilterAcceptanceStatus">
-              <span>全部</span>
-            </div>
-            <div>
-              <input v-model="acceptanceStatusCheckList" type="checkbox" :value="0" @change="handelFilterAcceptanceStatus">
-              <span>正常</span>
-            </div>
-            <div>
-              <input v-model="acceptanceStatusCheckList" type="checkbox" :value="1" @change="handelFilterAcceptanceStatus">
-              <span>临期</span>
-            </div>
-            <div>
-              <input v-model="acceptanceStatusCheckList" type="checkbox" :value="2" @change="handelFilterAcceptanceStatus">
-              <span>已过期</span>
-            </div>
-
-            <div slot="reference">
-              <span>票据状态</span>
-              <i class="el-icon-caret-bottom" />
-            </div>
-          </el-popover>
-        </template>
+      <el-table-column prop="acceptanceStatus" label="状态" align="center">
         <template slot-scope="scope">
           <el-tag
             v-if="scope.row.acceptanceStatus===0"

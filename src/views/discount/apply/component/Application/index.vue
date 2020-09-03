@@ -1,6 +1,7 @@
 <template>
   <el-card v-if="detail.discountInfoVO" class="my-card">
-    <h3>贴现申请信息（编号:{{ detail.discountInfoVO.id }})</h3>
+    <div class="draft-detail-title">贴现申请信息（编号:{{ detail.discountInfoVO.id }}）</div>
+    <div class="draft-detail-line" />
     <el-row :gutter="20" class="m-b-20">
       <el-col :span="8">
         <span class="display-inline-b width-150 ft-size-14 font-gray-color">申请贴现的tokenID：</span>
