@@ -1,65 +1,62 @@
 <template>
-  <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+  <div class="login-box">
+    <div class="login-container">
+      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
-      <div class="title-container">
-        <h3 class="title">账号登录</h3>
-      </div>
-
-      <el-form-item prop="username">
-        <span class="svg-container">
-          登录账号
-        </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
-
-      <el-form-item prop="password">
-        <span class="svg-container">
-          登录密码
-        </span>
-        <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
-          :type="passwordType"
-          placeholder="Password"
-          name="password"
-          tabindex="2"
-          auto-complete="on"
-          show-password
-          @keyup.enter.native="handleLogin"
-        />
-      </el-form-item>
-
-      <!-- <el-form-item prop="code">
-        <span class="svg-container">
-          图形验证码
-        </span>
-        <el-input
-          ref="code"
-          v-model="loginForm.code"
-          placeholder=""
-          name="code"
-          type="text"
-          tabindex="1"
-          auto-complete="off"
-        />
-        <div class="login-code">
-          <img :src="codeUrl">
+        <div class="title-container">
+          <h3 class="title text-center">登录</h3>
         </div>
-      </el-form-item> -->
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+        <el-form-item prop="username">
+          <el-input
+            ref="username"
+            v-model="loginForm.username"
+            placeholder="账号"
+            name="username"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
 
-    </el-form>
+        <el-form-item prop="password">
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="loginForm.password"
+            :type="passwordType"
+            placeholder="密码"
+            name="password"
+            tabindex="2"
+            auto-complete="on"
+            show-password
+            @keyup.enter.native="handleLogin"
+          />
+        </el-form-item>
+
+        <el-form-item>
+          <el-input
+            ref="code"
+            v-model="loginForm.code"
+            placeholder="验证码"
+            name="code"
+            type="text"
+            tabindex="1"
+            auto-complete="off"
+          />
+          <div class="login-code">
+            <img :src="codeUrl">
+          </div>
+        </el-form-item>
+
+        <el-form-item>
+          <el-checkbox>自动登录</el-checkbox>
+        </el-form-item>
+
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -147,18 +144,23 @@ export default {
 </script>
 
 <style lang="scss">
+.login-box{
+  height: 100%;
+  background-color: #F6F7F8;
+  background-image: url('../../assets/images/login_bg.png');
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 20%;
+}
 .login-container{
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  .title-container{
+  width: 510px;
+  height: 457px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 50px 60px;
 
-  }
 }
 .login-code {
   display: inline-block;
