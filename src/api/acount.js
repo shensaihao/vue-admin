@@ -10,7 +10,7 @@ import request from '@/utils/request'
  */
 export function addNewUser(data) {
   return request({
-    url: 'api/employeeManage/create',
+    url: '/employeeManage/create',
     method: 'post',
     data
   })
@@ -25,7 +25,7 @@ export function addNewUser(data) {
  */
 export function editUser(data) {
   return request({
-    url: '/api/employeeManage/edit',
+    url: '/employeeManage/edit',
     method: 'post',
     data
   })
@@ -33,15 +33,21 @@ export function editUser(data) {
 
 /**
  *
- *
+ * 查询权限
  */
+export function employeeManageList() {
+  return request({
+    url: '/employeeManage/role/list',
+    method: 'get'
+  })
+}
 
 /**
  * 新增权限
  */
 export function addNewRole(data) {
   return request({
-    url: 'api/employeeManage/role/create',
+    url: '/employeeManage/role/create',
     method: 'post',
     data
   })
@@ -52,7 +58,7 @@ export function addNewRole(data) {
  */
 export function editRole(data) {
   return request({
-    url: '/api/employeeManage/role/edit',
+    url: '/employeeManage/role/edit',
     method: 'post',
     data
   })
@@ -64,7 +70,7 @@ export function editRole(data) {
  */
 export function deleteRole(data) {
   return request({
-    url: `/api/employeeManage/delete?employeeId=${data}`,
+    url: `/employeeManage/delete?employeeId=${data}`,
     method: 'get'
   })
 }
@@ -74,7 +80,7 @@ export function deleteRole(data) {
  */
 export function getRoleList(data) {
   return request({
-    url: '/api/employeeManage/list',
+    url: '/employeeManage/list',
     method: 'post',
     data
   })
@@ -87,7 +93,7 @@ export function getRoleList(data) {
  */
 export function getHistoryAcount(data) {
   return request({
-    url: `/api/bank/list?page=${data}`,
+    url: `/bank/list?page=${data}`,
     method: 'get'
   })
 }
@@ -103,7 +109,7 @@ export function getHistoryAcount(data) {
  */
 export function addNewAcount(data) {
   return request({
-    url: '/api/bank/create',
+    url: '/bank/create',
     method: 'post',
     data
   })
@@ -115,7 +121,7 @@ export function addNewAcount(data) {
  */
 export function billRecord(data) {
   return request({
-    url: '/api/bank/record',
+    url: '/bank/record',
     method: 'get',
     data
   })
@@ -127,7 +133,7 @@ export function billRecord(data) {
  */
 export function deleteAcount(data) {
   return request({
-    url: '/api/bank/delete',
+    url: '/bank/delete',
     method: 'get',
     data
   })
@@ -139,7 +145,7 @@ export function deleteAcount(data) {
  */
 export function setPrimaryAcount(data) {
   return request({
-    url: `/api/bank/default?bankAccountId=${data}`,
+    url: `/bank/default?bankAccountId=${data}`,
     method: 'get'
   })
 }

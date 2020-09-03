@@ -4,15 +4,14 @@
       <!-- <panel-group @handleSetLineChartData="handleSetLineChartData" /> -->
       <el-form :inline="true" :model="roleQuery" class="qupta-form-inline" size="small">
         <el-form-item label="登录账号">
-          <el-input v-model="roleQuery.acount" placeholder="请输入" />
+          <el-input v-model="roleQuery.username" placeholder="请输入" />
         </el-form-item>
         <el-form-item label="姓名：">
-          <el-input v-model="roleQuery.name" placeholder="请输入" />
+          <el-input v-model="roleQuery.realName" placeholder="请输入" />
         </el-form-item>
         <el-form-item label="权限身份：">
-          <el-select v-model="roleQuery.role" placeholder="请选择">
-            <el-option label="超级管理员" value="superadmin" />
-            <el-option label="管理员" value="admin" />
+          <el-select v-model="roleQuery.roleId" placeholder="请选择">
+            <el-option v-for="(item, index) in roles" :key="index" :label="item.role" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item class="text-right">
@@ -21,7 +20,7 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card>
+    <el-card v-loading="loading" class="my-card">
       <el-button type="primary" @click="handleAdduser">新增员工</el-button>
       <el-button type="primary" class="m-l-10" @click="handelAddRole">权限配置</el-button>
       <el-table :data="rolesList" style="width: 100%;margin-top:30px;">
@@ -30,9 +29,9 @@
           type="index"
           width="50"
         />
-        <el-table-column label="员工登录账号" width="220" prop="accountNumber">
+        <el-table-column label="员工登录账号" width="220" prop="username">
           <template slot-scope="scope">
-            {{ scope.row.accountNumber }}
+            {{ scope.row.username }}
           </template>
         </el-table-column>
         <el-table-column label="员工姓名" width="220" prop="realName">
@@ -59,25 +58,27 @@
         <el-table-column label="权限身份" width="220" prop="role">
           <template slot-scope="scope">
             <template v-if="scope.row.edit">
-              <el-input v-model="scope.row.role" class="edit-input" size="small" />
+              <el-select v-model="scope.row.role" placeholder="请选择" size="small">
+                <el-option v-for="(item, index) in roles" :key="index" :label="item.role" :value="item.roleId" />
+              </el-select>
             </template>
             <span v-else>{{ scope.row.role }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.edit" type="primary" size="small" @click="confirmEdit(scope.row)">
+            <el-button v-if="scope.row.edit" type="text" size="small" @click="confirmEdit(scope.row)">
               保存
             </el-button>
-            <el-button v-else type="primary" size="small" @click="handelEditRole(scope.row)">编辑</el-button>
-            <el-button type="danger" size="small" class="m-l-10" @click="handleDelete(scope)">删除</el-button>
+            <el-button v-else type="text" size="small" @click="handelEditRole(scope.row)">编辑</el-button>
+            <el-button type="text" size="small" class="m-l-10" @click="handleDelete(scope)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
         :current-page="page"
         :page-sizes="[20, 50, 100, 150]"
-        :page-size="20"
+        :page-size="size"
         layout="total, sizes, prev, pager, next"
         :total="total"
         class="align-right"
@@ -85,23 +86,21 @@
         @current-change="handleCurrentChange"
       />
     </el-card>
-    <AddNewUser :dialog-visible="dialogVisible" @close="handelCloseAddUser" @addNewUser="handelConfirmAddNewUser" />
-    <AddNewRole :roledialog-visible="roledialogVisible" @close="handelCloseAddRole" @addNewRole="handelConfirmAddNewRole" />
+    <AddNewUser :roles="roles" :dialog-visible="dialogVisible" @close="handelCloseAddUser" @addNewUser="handelConfirmAddNewUser" />
+    <AddNewRole
+      :roles="roles"
+      :roledialog-visible="roledialogVisible"
+      @close="handelCloseAddRole"
+      @addNewRole="handelConfirmAddNewRole"
+      @editRole="handelConfirmEditRole"
+    />
   </div>
 </template>
 
 <script>
-import path from 'path'
-import { deepClone } from '@/utils'
-import { getRoleList, deleteRole, editRole, addNewRole, addNewUser } from '@/api/acount'
+import { getRoleList, deleteRole, editRole, addNewRole, addNewUser, employeeManageList, editUser } from '@/api/acount'
 import AddNewUser from './component/AddNewUser/index'
 import AddNewRole from './component/AddNewRole/index'
-
-const defaultRole = {
-  accountNumber: '',
-  realName: '',
-  role: ''
-}
 
 export default {
   components: {
@@ -110,13 +109,16 @@ export default {
   },
   data() {
     return {
-      role: Object.assign({}, defaultRole),
+      roles: [],
       routes: [],
       page: 1,
       size: 20,
       total: 0,
+      loading: false,
       rolesList: [],
-      roleQuery: {},
+      roleQuery: {
+        roleId: ''
+      },
       dialogVisible: false,
       roledialogVisible: false,
       dialogType: 'new',
@@ -133,27 +135,71 @@ export default {
     }
   },
   created() {
-    this.getRoleList()
+    const roleQuery = {
+      page: this.page,
+      size: this.size
+    }
+    this.getRoleList(roleQuery)
+    this.getRole()
   },
   methods: {
     onSubmit() {
-      console.log(123)
+      const roleQuery = {
+        page: 1,
+        size: 20,
+        ...this.roleQuery
+      }
+      console.log(this.roleQuery)
+      this.getRoleList(roleQuery)
     },
     handelEditRole(row) {
       row.edit = true
     },
     confirmEdit(row) {
       row.edit = false
+      let role = ''
+      this.roles.map((item) => {
+        if (item.role === row.role) {
+          role = item.id
+        }
+      })
+      const { password, id, phone, realName, username } = row
+      const rolequery = {
+        role,
+        password,
+        id,
+        phone,
+        realName,
+        username
+      }
+      editUser(rolequery).then((res) => {
+        const roleQuery = {
+          page: 1,
+          size: 20
+        }
+        this.getRoleList(roleQuery)
+        this.$message.success('修改成功')
+      }).catch(() => {
+        this.$message.error('修改失败')
+      })
     },
     handelReset() {
       this.roleQuery = {}
-    },
-    getRoleList() {
-      const param = {
-        page: this.page,
-        size: this.size
+      const roleQuery = {
+        page: 1,
+        size: 20,
+        ...this.roleQuery
       }
-      getRoleList(param).then((res) => {
+      this.getRoleList(roleQuery)
+    },
+    getRole() {
+      employeeManageList().then((res) => {
+        this.roles = res.content
+      })
+    },
+    getRoleList(roleQuery) {
+      this.loading = true
+      getRoleList(roleQuery).then((res) => {
         const list = res.content.list
         this.rolesList = list.map(v => {
           this.$set(v, 'edit', false)
@@ -165,13 +211,27 @@ export default {
           message: err,
           type: 'error'
         })
+      }).finally(() => {
+        this.loading = false
       })
     },
     handleSizeChange(size) {
       this.size = size
+      const roleQuery = {
+        page: 1,
+        size: this.size,
+        ...this.roleQuery
+      }
+      this.getRoleList(roleQuery)
     },
     handleCurrentChange(page) {
       this.page = page
+      const roleQuery = {
+        page: this.page,
+        size: this.size,
+        ...this.roleQuery
+      }
+      this.getRoleList(roleQuery)
     },
     deleteRole(row) {
       const { id } = row
@@ -189,6 +249,16 @@ export default {
     },
     editRole() {
       editRole().then((res) => {
+        const roleQuery = {
+          page: 1,
+          size: 20
+        }
+        this.getRoleList(roleQuery)
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '编辑成功!'
+        })
       }).catch((err) => {
         this.$message({
           message: err,
@@ -205,52 +275,6 @@ export default {
         })
       })
     },
-    // async getRoles() {
-    //   // const res = await getRoles()
-    //   this.rolesList = res.data
-    // },
-
-    // Reshape the routes structure so that it looks the same as the sidebar
-    generateRoutes(routes, basePath = '/') {
-      const res = []
-
-      for (let route of routes) {
-        // skip some route
-        if (route.hidden) { continue }
-
-        const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route)
-
-        if (route.children && onlyOneShowingChild && !route.alwaysShow) {
-          route = onlyOneShowingChild
-        }
-
-        const data = {
-          path: path.resolve(basePath, route.path),
-          title: route.meta && route.meta.title
-
-        }
-
-        // recursive child routes
-        if (route.children) {
-          data.children = this.generateRoutes(route.children, data.path)
-        }
-        res.push(data)
-      }
-      return res
-    },
-    generateArr(routes) {
-      let data = []
-      routes.forEach(route => {
-        data.push(route)
-        if (route.children) {
-          const temp = this.generateArr(route.children)
-          if (temp.length > 0) {
-            data = [...data, ...temp]
-          }
-        }
-      })
-      return data
-    },
     handleAdduser() {
       this.dialogVisible = true
     },
@@ -264,29 +288,34 @@ export default {
       this.roledialogVisible = false
     },
     handelConfirmAddNewUser(users) {
-      addNewUser().then((res) => {
+      console.log(users)
+      addNewUser(users).then((res) => {
         this.$message.success('员工新增成功')
+        this.dialogVisible = false
+        const roleQuery = {
+          page: 1,
+          size: 20
+        }
+        this.getRoleList(roleQuery)
       }).catch(() => {
         this.$message.error('员工新增失败，请重新添加')
       })
     },
     handelConfirmAddNewRole(roles) {
-      addNewRole().then((res) => {
+      addNewRole(roles).then((res) => {
         this.$message.success('权限新增成功')
+        this.roledialogVisible = false
       }).catch(() => {
-        this.$message.error('员工新增失败，请重新添加')
+        this.$message.error('权限新增失败，请重新添加')
       })
     },
-    handleEdit(scope) {
-      this.dialogType = 'edit'
-      this.dialogVisible = true
-      this.checkStrictly = true
-      this.role = deepClone(scope.row)
-      this.$nextTick(() => {
-        const routes = this.generateRoutes(this.role.routes)
-        this.$refs.tree.setCheckedNodes(this.generateArr(routes))
-        // set checked state of a node not affects its father and child nodes
-        this.checkStrictly = false
+    handelConfirmEditRole(roles) {
+      editRole(roles).then((res) => {
+        this.$message.success('权限修改成功')
+        this.roledialogVisible = false
+      }).catch(() => {
+        this.$message.error('权限修改失败，请重试')
+        this.roledialogVisible = false
       })
     },
     handleDelete({ $index, row }) {
@@ -299,80 +328,9 @@ export default {
           this.deleteRole(row)
           this.rolesList.splice($index, 1)
         })
-        .catch(err => { console.error(err) })
-    },
-    generateTree(routes, basePath = '/', checkedKeys) {
-      const res = []
-
-      for (const route of routes) {
-        const routePath = path.resolve(basePath, route.path)
-
-        // recursive child routes
-        if (route.children) {
-          route.children = this.generateTree(route.children, routePath, checkedKeys)
-        }
-
-        if (checkedKeys.includes(routePath) || (route.children && route.children.length >= 1)) {
-          res.push(route)
-        }
-      }
-      return res
-    },
-    async confirmRole() {
-      const isEdit = this.dialogType === 'edit'
-
-      // const checkedKeys = this.$refs.tree.getCheckedKeys()
-      //   this.role.routes = this.generateTree(deepClone(this.serviceRoutes), '/', checkedKeys)
-
-      if (isEdit) {
-        editRole(this.role).then((res) => {
-          this.getRoleList()
-        }).catch((err) => {
-          this.$message({
-            message: err,
-            type: 'error'
-          })
+        .catch(() => {
+          this.$message.error('删除失败')
         })
-        for (let index = 0; index < this.rolesList.length; index++) {
-          if (this.rolesList[index].acount === this.role.acount) {
-            this.rolesList.splice(index, 1, Object.assign({}, this.role))
-            break
-          }
-        }
-      } else {
-        const employee = JSON.stringify(this.role)
-        addNewRole(employee).then((res) => {
-          this.rolesList.push(this.role)
-        }).catch((err) => {
-          this.$message({
-            message: err,
-            type: 'error'
-          })
-        })
-      }
-
-      this.dialogVisible = false
-      this.$message({
-        type: 'success',
-        message: '编辑成功成功!'
-      })
-    },
-    onlyOneShowingChild(children = [], parent) {
-      let onlyOneChild = null
-      const showingChildren = children.filter(item => !item.hidden)
-
-      if (showingChildren.length === 1) {
-        onlyOneChild = showingChildren[0]
-        onlyOneChild.path = path.resolve(parent.path, onlyOneChild.path)
-        return onlyOneChild
-      }
-
-      if (showingChildren.length === 0) {
-        onlyOneChild = { ... parent, path: '', noShowingChildren: true }
-        return onlyOneChild
-      }
-
-      return false
     }
   }
 }

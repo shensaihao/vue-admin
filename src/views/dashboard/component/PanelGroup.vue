@@ -11,7 +11,7 @@
             受信企业数量
           </div>
           <div class="card-panel-num">
-            12
+            1
           </div>
         </div>
       </div>
@@ -27,7 +27,7 @@
             受信企业受信额度
           </div>
           <div class="card-panel-num">
-            50000000
+            500000
           </div>
         </div>
       </div>
@@ -40,10 +40,10 @@
         <div class="card-panel-btn">查看 ></div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            正在持有的有效
+            正在持有的有效额度
           </div>
           <div class="card-panel-num">
-            5000
+            500000
           </div>
         </div>
       </div>
@@ -59,7 +59,7 @@
             已承诺保贴额度
           </div>
           <div class="card-panel-num">
-            5000
+            1000000
           </div>
         </div>
       </div>

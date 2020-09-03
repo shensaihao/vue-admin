@@ -111,6 +111,10 @@ $grayColor: #a0acba;
     margin-bottom: 20px;
 }
 
+.m-b-5 {
+    margin-bottom: 5px;
+}
+
 .m-l-10 {
     margin-left: 10px !important;
 }
@@ -139,8 +143,16 @@ $grayColor: #a0acba;
     width: 150px;
 }
 
+.width-130 {
+    width: 130px;
+}
+
+.width-110 {
+    width: 100px;
+}
+
 .width-115 {
-    width: 115px;
+    width: 120px;
 }
 
 .width-100{
@@ -200,5 +212,5 @@ $grayColor: #a0acba;
 }
 
 .color-error{
-    color: #F56C6C;
+    color: #F56C6C; 
 }

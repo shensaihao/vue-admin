@@ -15,7 +15,9 @@
   },
   "dependencies": {
     "axios": "0.18.1",
+    "clipboard": "^2.0.6",
     "core-js": "3.6.5",
+    "dayjs": "^1.8.31",
     "element-ui": "2.13.2",
     "js-cookie": "2.2.0",
     "normalize.css": "7.0.0",
@@ -41,6 +43,7 @@
     "eslint-plugin-vue": "6.2.2",
     "html-webpack-plugin": "3.2.0",
     "mockjs": "1.0.1-beta3",
+    "qs": "^6.9.4",
     "runjs": "4.3.2",
     "sass": "1.26.8",
     "sass-loader": "8.0.2",

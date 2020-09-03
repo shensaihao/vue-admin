@@ -35,15 +35,6 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    },
-    proxy: {
-      '/api': {
-        target: 'http://192.168.3.52:8888/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
-      }
     }
     // before: require('./mock/mock-server.js')
   },

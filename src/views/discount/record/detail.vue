@@ -1,29 +1,29 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-card class="my-card">
       <el-row :gutter="20">
         <el-col :span="6">
           <div class="flex-center-col bill-card">
             <div>贴现tokenid</div>
-            <div>123456</div>
+            <div>{{ discountDetailInfo.discountInfoVO.tokenId }}</div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="flex-center-col bill-card">
             <div>实际贴现金额</div>
-            <div>965300.00（玖拾陆万伍千叄佰万）</div>
+            <div>{{ discountDetailInfo.remitterVO.total }}</div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="flex-center-col bill-card">
-            <div>日利率，提前贴现时长</div>
-            <div>0.015%/35天</div>
+            <div>日利率</div>
+            <div>{{ discountDetailInfo.draftReviewVO.total }}</div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="flex-center-col bill-card">
-            <div>出票企业：xxxxx</div>
-            <div>出票企业联系方式：166666666666</div>
+            <div>出票企业：{{ discountDetailInfo.discountInfoVO.accountName }}</div>
+            <div>出票企业联系方式：{{ discountDetailInfo.discountInfoVO.accountNo }}</div>
           </div>
         </el-col>
       </el-row>
@@ -44,7 +44,8 @@ export default {
   data() {
     return {
       urgingDialog: false,
-      discountDetailInfo: {}
+      discountDetailInfo: {},
+      loading: false
     }
   },
   created() {
@@ -53,6 +54,7 @@ export default {
   },
   methods: {
     getDiscountDetail(id) {
+      this.loading = true
       discountDetail(id).then((res) => {
         if (res.content) {
           this.discountDetailInfo = res.content
@@ -62,6 +64,8 @@ export default {
           message: err,
           type: 'error'
         })
+      }).finally(() => {
+        this.loading = false
       })
     },
     back() {

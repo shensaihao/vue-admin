@@ -3,11 +3,11 @@
     <el-card class="my-card">
       <!-- <panel-group @handleSetLineChartData="handleSetLineChartData" /> -->
       <el-form :inline="true" :model="companyQuery" class="qupta-form-inline" size="small">
-        <el-form-item label="搜索企业名称">
-          <el-input v-model="companyQuery.companyName" placeholder="请输入" />
+        <el-form-item label="企业编号">
+          <el-input v-model="companyQuery.no" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="搜索企业ID">
-          <el-input v-model="companyQuery.companyId" placeholder="请输入" />
+        <el-form-item label="企业名称">
+          <el-input v-model="companyQuery.companyName" placeholder="请输入" />
         </el-form-item>
         <el-form-item class="text-right">
           <el-button type="primary" size="small" @click="onSubmit">搜索</el-button>
@@ -16,11 +16,22 @@
       </el-form>
     </el-card>
     <el-card>
-      <el-table :data="enterpriseList" border style="width: 100%">
-        <el-table-column prop="accountName" label="账户名称" align="center" />
-        <el-table-column prop="accountNumber" label="银行账号" align="center" />
-        <el-table-column prop="bankName" label="所属银行" align="center" />
-        <el-table-column prop="bankAddress" label="开户行" align="center" />
+      <el-button type="primary" size="small" @click="handelClickAdd">
+        新增授信企业
+      </el-button>
+      <el-table v-loading="loading" :data="enterpriseList" style="width: 100%">
+        <el-table-column
+          label="序号"
+          type="index"
+          width="50"
+        />
+        <el-table-column prop="id" label="企业编号" align="center" />
+        <el-table-column prop="name" label="企业名称" align="center" />
+        <el-table-column prop="limitNum" label="授信额度" align="center" />
+        <el-table-column prop="limitUsed" label="已使用额度" align="center" />
+        <el-table-column prop="limitAvailable" label="可用额度" align="center" />
+        <el-table-column prop="limitFrozen" label="冻结额度" align="center" />
+        <el-table-column prop="rate" label="日利率" align="center" />
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button
@@ -34,7 +45,7 @@
       <el-pagination
         :current-page="page"
         :page-sizes="[20, 50, 100, 150]"
-        :page-size="100"
+        :page-size="size"
         layout="total, sizes, prev, pager, next"
         :total="total"
         class="align-right"
@@ -52,13 +63,13 @@
         <div class="flex-between">
           <div>
             <div class="m-b-20">
-              当前企业总额度：500000元
+              当前企业总额度：{{ companyQuery.limitNum }}元
             </div>
             <div class="m-b-20">
-              当前企业可用额度：200000元
+              当前企业可用额度：{{ companyQuery.limitAvailable }}元
             </div>
             <div class="m-b-20">
-              当前企业已占用额度：300000元
+              当前企业已用额度：{{ companyQuery.limitUsed }}元
             </div>
           </div>
           <div>
@@ -66,13 +77,13 @@
           </div>
           <div>
             <div class="m-b-20">
-              调整后企业总额度：500000元
+              调整后企业总额度：{{ limit }}元
             </div>
             <div class="m-b-20">
-              调整后企业可用额度：200000元
+              调整后企业可用额度：{{ limit - companyQuery.limitUsed <= 0 ? 0: limit - companyQuery.limitUsed }}元
             </div>
             <div class="m-b-20">
-              当前企业已占用额度：300000元
+              当前企业已占用额度：{{ companyQuery.limitUsed }}元
             </div>
           </div>
         </div>
@@ -82,35 +93,19 @@
         </div>
       </el-dialog>
     </el-card>
+    <AddCompany :company-visible="companyVisible" @confirmadd="handelConfirmAddCompany" @close="closeAddDialog" />
   </div>
 </template>
 
 <script>
 // import PanelGroup from './component/PanelGroup'
-import { getEnterpriseList, editEnterpriseQuota } from '@/api/quota'
+import { getEnterpriseList, editEnterpriseQuota, addLimitManage } from '@/api/quota'
+import AddCompany from './component/AddCompany'
 
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
 export default {
-  // components: {
-  //   PanelGroup
-  // },
+  components: {
+    AddCompany
+  },
   data() {
     return {
       total: 0,
@@ -119,62 +114,112 @@ export default {
       enterpriseInfo: {},
       companyQuery: {
         companyName: '',
-        companyId: ''
+        no: ''
       },
       enterpriseList: [],
       dialogVisible: false,
       newquota: '',
-      lineChartData: lineChartData.newVisitis,
-      limit: 0
+      limit: 0,
+      companyVisible: false,
+      loading: false
     }
   },
   created() {
-    this.getEnterpriseList()
+    const companyQuery = {
+      page: 1,
+      size: 20
+    }
+    this.getEnterpriseList(companyQuery)
   },
   methods: {
-    getEnterpriseList() {
-      const { companyName, companyId } = this.companyQuery
-      const companyQuery = {
-        companyName,
-        companyId
-      }
+    handelClickAdd() {
+      this.companyVisible = true
+    },
+    handelConfirmAddCompany(query) {
+      const { id, limit, rate } = query
+      const q = { id, limit, rate }
+      addLimitManage(q).then((res) => {
+        this.$message.success('添加成功')
+      }).catch((err) => {
+        this.$message.error(err)
+      })
+      console.log(query)
+      console.log('con')
+    },
+    closeAddDialog() {
+      this.companyVisible = false
+    },
+    getEnterpriseList(companyQuery) {
+      this.loading = true
       getEnterpriseList(companyQuery).then((res) => {
-        this.enterpriseList = res.content.list
+        if (res.content) {
+          this.enterpriseList = res.content.list
+          this.total = res.content.count
+        }
       }).catch((err) => {
         this.$message({
           message: err,
           type: 'error'
         })
+      }).finally(() => {
+        this.loading = false
       })
     },
     editQuota(index, row) {
       this.companyQuery = row
+      this.limit = row.limitNum
       this.dialogVisible = true
     },
     handleSizeChange(size) {
       this.size = size
+      const { companyName, no } = this.companyQuery
+      const companyQuery = {
+        page: 1,
+        size: this.size,
+        companyName,
+        no
+      }
+      this.getEnterpriseList(companyQuery)
     },
     handleCurrentChange(page) {
       this.page = page
+      const { companyName, no } = this.companyQuery
+      const companyQuery = {
+        page: this.page,
+        size: this.size,
+        companyName,
+        no
+      }
+      this.getEnterpriseList(companyQuery)
     },
     onSubmit() {
-      this.getEnterpriseList()
+      const { companyName, no } = this.companyQuery
+      const companyQuery = {
+        page: 1,
+        size: this.size,
+        companyName,
+        no
+      }
+      this.getEnterpriseList(companyQuery)
     },
     reset() {
       this.companyQuery = {}
-      this.getEnterpriseList()
-    },
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
+      const companyQuery = {
+        page: 1,
+        size: 20,
+        ...this.companyQuery
+      }
+      this.getEnterpriseList(companyQuery)
     },
     confirmEdit() {
-      const { companyName, companyId } = this.companyQuery
-      const companyQuery = {
-        limit: this.limit,
-        companyName,
-        companyId
-      }
-      editEnterpriseQuota(companyQuery).then((res) => {
+      const { id } = this.companyQuery
+      editEnterpriseQuota(id, this.limit).then((res) => {
+        this.$message.success('修改成功')
+        const companyQuery = {
+          page: 1,
+          size: 20
+        }
+        this.getEnterpriseList(companyQuery)
       }).catch((err) => {
         this.$message({
           message: err,

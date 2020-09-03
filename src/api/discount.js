@@ -65,7 +65,7 @@ export function discountList(data) {
  */
 export function getDiscountList(data) {
   return request({
-    url: '/api/discount/search',
+    url: '/discount/search',
     method: 'POST',
     data
   })
@@ -76,7 +76,7 @@ export function getDiscountList(data) {
  */
 export function passDiscountApply(data) {
   return request({
-    url: `/api/discount/applies/pass?id=${data}`,
+    url: `/discount/applies/pass?id=${data}`,
     method: 'get'
   })
 }
@@ -86,7 +86,7 @@ export function passDiscountApply(data) {
  */
 export function confirmTransferAcount(data) {
   return request({
-    url: '/api/discount/applies/confirm',
+    url: '/discount/applies/confirm',
     method: 'post',
     data
   })
@@ -97,7 +97,7 @@ export function confirmTransferAcount(data) {
  */
 export function discountDetail(data) {
   return request({
-    url: `/api/discount/detail?id=${data}`,
+    url: `/discount/detail?id=${data}`,
     method: 'get'
   })
 }
@@ -106,7 +106,7 @@ export function discountDetail(data) {
  */
 export function discountAppliesFailed(data) {
   return request({
-    url: '/api/discount/applies/failed',
+    url: '/discount/applies/failed',
     method: 'post',
     data
   })
@@ -117,8 +117,18 @@ export function discountAppliesFailed(data) {
  */
 export function discountAppliesUpload(data) {
   return request({
-    url: '/api/discount/applies/upload',
+    url: '/discount/applies/upload',
     method: 'post',
     data
+  })
+}
+
+/**
+ * 下一条详情
+ */
+export function discountNextDetail(data) {
+  return request({
+    url: `/discount/nextDetail?id=${data}`,
+    method: 'get'
   })
 }

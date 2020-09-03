@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div v-loading="loading">
 
     <!-- <div>
       <el-button type="text" icon="el-icon-arrow-left" @click="back">返回上一页</el-button>
     </div> -->
     <el-card class="my-card">
       <el-steps :active="active">
-        <el-step title="提交开票申请" description="核心企业名称2020.06.2012:32" />
-        <el-step title="确认合同信息" description="迎曦2020.06.2012:32" />
-        <el-step title="确认商票信息" description="小龙女" />
+        <el-step title="提交开票申请" description="" />
+        <el-step title="确认合同信息" description="" />
+        <el-step title="确认商票信息" description="" />
         <el-step title="审核开票" description="" />
         <el-step title="完成" description="" />
       </el-steps>
@@ -24,7 +24,37 @@
         审核备注：{{ noPassComment }}
       </div>
     </el-card>
-    <Invoice v-if="active===5" :detail="examineDetailInfo" />
+    <el-card v-if="active===5&&!unpass" class="flex-column-center my-card text-center" body-style="width: 100%">
+      <div class="m-b-20">
+        <i class="el-icon-success ft-size-56 font-weight color-success" />
+      </div>
+      <div class="ft-size-18 font-weight m-b-20">
+        开票成功
+      </div>
+      <div class="ft-size-12 m-b-20">
+        企业的开票申请已经通过
+      </div>
+    </el-card>
+    <!-- <el-card v-if="active===4&&!unpass" class="flex-column-center my-card" body-style="width: 100%;" style="background: #E8EFF7">
+      <div class="flex-start">
+        <i class="el-icon-info ft-size-20 font-weight color-primary m-r-30" />
+        <div class="m-b-20 ft-size-14">
+          1、请确认核心企业额度足够；
+        </div>
+        <div class="m-b-20 m-l-30 ft-size-14">
+          2、请确认贴现日利率无误；
+        </div>
+      </div>
+      <div class="flex-start m-l-30 ft-size-14">
+        <div class="m-b-20">
+          3、请与核心企业和供应商联系人确认开票申请真实存在；
+        </div>
+        <div class="m-b-20 m-l-30 ft-size-14">
+          4、请确认收款账户确认无误；
+        </div>
+      </div>
+    </el-card> -->
+    <Invoice v-if="active===5&&!unpass" :detail="examineDetailInfo" />
     <Application :detail="examineDetailInfo" />
     <Contract :detail="examineDetailInfo" />
     <div style="margin-left: 10px">
@@ -115,12 +145,14 @@
 </template>
 
 <script>
+import axios from 'axios'
+import qs from 'qs'
 import Application from './component/Application/index'
 import Contract from './component/Contract/index'
 import Invoice from './component/Invoice/index'
 import Draft from './component/Draft/index'
 import { examineDetailInfo, draftExamineFailed, draftExamineContract,
-  draftExamineDraftDraftInfo, draftExamineDraftAcceptt } from '@/api/bill'
+  draftExamineDraftDraftInfo, draftExamineDraftAcceptt, examineNextDetail } from '@/api/bill'
 
 export default {
   components: {
@@ -150,8 +182,12 @@ export default {
       disabled: true,
       hasDraftInfoCollspan: false,
       noPassComment: '',
-      unpass: false
+      unpass: false,
+      loading: false
     }
+  },
+  watch: {
+    $route: 'getExamineDetailInfo'
   },
   created() {
     const id = this.$route.query.id
@@ -159,6 +195,8 @@ export default {
   },
   methods: {
     getExamineDetailInfo(id) {
+      this.loading = true
+      if (id.query) id = this.$route.query.id
       examineDetailInfo(id).then((res) => {
         if (res.content) {
           this.examineDetailInfo = res.content
@@ -173,8 +211,10 @@ export default {
           }
           if (res.content.noPassComment) {
             this.noPassComment = res.content.noPassComment
+          } else {
+            this.noPassComment = null
           }
-          if (res.content.noPassComment && res.content.status === 2) {
+          if (!res.content.confirm && res.content.status === 2) {
             this.unpass = true
           }
         }
@@ -183,6 +223,8 @@ export default {
           message: err,
           type: 'error'
         })
+      }).finally(() => {
+        this.loading = false
       })
     },
     hadelDraftInfoCollspan() {
@@ -192,8 +234,16 @@ export default {
     //   this.$router.go(-1)
     // }
     previewImage(image) {
-      this.dialogVisible = true
-      this.dialogImageUrl = image
+      axios.post('http://182.148.53.142:19837/partner/obtain_url', qs.stringify({ ossKey: image })).then((res) => {
+        if (res.data.code === 0) {
+          this.dialogVisible = true
+          this.dialogImageUrl = res.data.data
+        } else {
+          this.$message(res.data.message)
+        }
+      }).catch(() => {
+        this.$message('图片获取失败')
+      })
     },
     handleClose() {
       this.dialogVisible = false
@@ -205,7 +255,7 @@ export default {
       this.hasConfirmContract = true
       this.contractDialog = false
       const ConfirmParam = {
-        id: this.$route.query.id,
+        id: this.examineDetailInfo.id,
         contract: true
       }
       draftExamineContract(ConfirmParam).then((res) => {
@@ -223,7 +273,7 @@ export default {
       this.hasConfirmExamine = true
       this.examineDialog = false
       const ConfirmParam = {
-        id: this.$route.query.id,
+        id: this.examineDetailInfo.id,
         draftInfo: true
       }
       draftExamineDraftDraftInfo(ConfirmParam).then((res) => {
@@ -241,7 +291,7 @@ export default {
       this.invoiceDialog = false
       this.hasConfirmInvoice = true
       const ConfirmParam = {
-        id: this.$route.query.id,
+        id: this.examineDetailInfo.id,
         draftAccept: true
       }
       draftExamineDraftAcceptt(ConfirmParam).then((res) => {
@@ -253,13 +303,24 @@ export default {
         })
     },
     handelClickNextOne() {
-      console.log('next one')
+      examineNextDetail(this.$route.query.id).then((res) => {
+        if (res.content) {
+          this.$router.replace({ path: '/bill/examine/detail', query: { id: res.content.id }})
+        } else {
+          this.$message.warning('暂无下一条')
+        }
+      }).catch((err) => {
+        this.$message({
+          message: err,
+          type: 'error'
+        })
+      })
     },
     handelClickUnPass() {
       this.receiveDialog = true
     },
     confirmUnPass() {
-      const id = this.$route.query.id
+      const id = this.examineDetailInfo.id
       const query = {
         id: id,
         noPassComment: this.noPassComment

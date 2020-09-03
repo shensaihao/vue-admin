@@ -4,15 +4,15 @@
       <el-row :gutter="20" class="m-b-20 m-t-20">
         <el-col :span="7" class="flex-start">
           <span class="ft-size-14 display-inline-b width-115">申请编号</span>
-          <el-input v-model="searchForm.discountId" placeholder="请输入" style="width:250px" size="small" class="m-l-10" />
+          <el-input v-model="searchForm.discountId" placeholder="请输入" style="width:200px" size="small" class="m-l-10" />
         </el-col>
         <el-col :span="7">
           <span class="ft-size-14 display-inline-b width-115">贴现申请人名称</span>
-          <el-input v-model="searchForm.discountApplicantName" placeholder="请输入" style="width:250px" size="small" class="m-l-10" />
+          <el-input v-model="searchForm.discountApplicantName" placeholder="请输入" style="width:200px" size="small" class="m-l-10" />
         </el-col>
         <el-col :span="7">
           <span class="ft-size-14 display-inline-b width-115">申请贴现的tokenID</span>
-          <el-input v-model="searchForm.tokenId" placeholder="请输入" style="width:250px" size="small" class="m-l-10" />
+          <el-input v-model="searchForm.tokenId" placeholder="请输入" style="width:200px" size="small" class="m-l-10" />
         </el-col>
       </el-row>
       <el-row :gutter="20">
@@ -25,14 +25,14 @@
             end-placeholder="结束日期"
             :default-time="['12:00:00']"
             size="small"
-            style="width: 250px"
+            style="width: 200px"
             class="m-l-10"
           />
         </el-col>
         <el-col :span="7">
           <span class="ft-size-14 display-inline-b width-115">搜索承兑金额</span>
-          <el-input v-model="searchForm.minAmount" placeholder="最小" style="width:100px" size="small" class="m-l-10" />
-          <el-input v-model="searchForm.maxAmount" placeholder="最大" style="width:100px" size="small" class="m-l-10" />
+          <el-input v-model.number="searchForm.minAmount" placeholder="最小" style="width:100px" size="small" class="m-l-10" />
+          <el-input v-model.number="searchForm.maxAmount" placeholder="最大" style="width:100px" size="small" class="m-l-10" />
         </el-col>
         <el-col :span="7" class="flex-start">
           <el-button class="m-b-20" type="primary" size="small" @click="searchList">搜索</el-button>
@@ -43,18 +43,18 @@
     <el-card class="my-card">
       <el-tabs v-model="activeName" @tab-click="changeStatus">
         <el-tab-pane label="待审核" name="examine">
-          <ExamineTable :data="examineData" />
+          <ExamineTable :data="examineData" :loading="loading" />
         </el-tab-pane>
         <el-tab-pane label="待贴现" name="discount">
-          <DiscountTable :data="discountData" />
+          <DiscountTable :data="discountData" :loading="loading" />
         </el-tab-pane>
-        <el-tab-pane label="已审核" name="examined">
-          <ExaminedTable :data="examinedData" />
+        <el-tab-pane label="已贴现" name="examined">
+          <ExaminedTable :data="examinedData" :loading="loading" />
         </el-tab-pane>
         <el-pagination
           :current-page="page"
           :page-sizes="[20, 50, 100, 150]"
-          :page-size="100"
+          :page-size="size"
           layout="total, sizes, prev, pager, next"
           :total="total"
           class="align-right"
@@ -89,25 +89,76 @@ export default {
       examineData: [],
       examinedData: [],
       discountData: [],
-      searchForm: {}
+      searchForm: {},
+      loading: false,
+      status: 1
     }
   },
   created() {
     const discountQuery = {
-      page: 1,
-      size: 20,
-      status: 1
+      page: this.page,
+      size: this.size,
+      status: this.status
     }
     this.getExamineData(discountQuery)
   },
   methods: {
     handleSizeChange(size) {
       this.size = size
+      if (this.status === 2) {
+        const discountQuery = {
+          page: 1,
+          size: this.size,
+          status: this.status
+        }
+        this.getDiscountData(discountQuery)
+      }
+      if (this.status === 1) {
+        const discountQuery = {
+          page: 1,
+          size: this.size,
+          status: this.status
+        }
+        this.getExamineData(discountQuery)
+      }
+      if (this.status === 3) {
+        const discountQuery = {
+          page: 1,
+          size: this.size,
+          status: this.status
+        }
+        this.getExaminedData(discountQuery)
+      }
     },
     handleCurrentChange(page) {
       this.page = page
+      if (this.status === 2) {
+        const discountQuery = {
+          page: this.page,
+          size: this.size,
+          status: this.status
+        }
+        this.getDiscountData(discountQuery)
+      }
+      if (this.status === 1) {
+        const discountQuery = {
+          page: this.page,
+          size: this.size,
+          status: this.status
+        }
+        this.getExamineData(discountQuery)
+      }
+      if (this.status === 3) {
+        const discountQuery = {
+          page: this.page,
+          size: this.size,
+          status: this.status
+        }
+        this.getExaminedData(discountQuery)
+      }
     },
     getDiscountData(discountQuery) {
+      this.loading = true
       getDiscountList(discountQuery).then((res) => {
         if (res.content) {
           this.discountData = res.content.list
@@ -121,9 +172,12 @@ export default {
           message: err,
           type: 'error'
         })
+      }).finally(() => {
+        this.loading = false
       })
     },
     getExamineData(discountQuery) {
+      this.loading = true
       getDiscountList(discountQuery).then((res) => {
         if (res.content) {
           this.examineData = res.content.list
@@ -137,9 +191,12 @@ export default {
           message: err,
           type: 'error'
         })
+      }).finally(() => {
+        this.loading = false
       })
     },
     getExaminedData(discountQuery) {
+      this.loading = true
       getDiscountList(discountQuery).then((res) => {
         if (res.content) {
           this.examinedData = res.content.list
@@ -153,31 +210,36 @@ export default {
           message: err,
           type: 'error'
         })
+      }).finally(() => {
+        this.loading = false
       })
     },
     changeStatus() {
       this.searchForm = {}
       if (this.activeName === 'discount') {
+        this.status = 2
         const discountQuery = {
           page: 1,
-          size: 20,
-          status: 2
+          size: this.size,
+          status: this.status
         }
         this.getDiscountData(discountQuery)
       }
       if (this.activeName === 'examine') {
+        this.status = 1
         const discountQuery = {
           page: 1,
-          size: 20,
-          status: 1
+          size: this.size,
+          status: this.status
         }
         this.getExamineData(discountQuery)
       }
       if (this.activeName === 'examined') {
+        this.status = 3
         const discountQuery = {
           page: 1,
-          size: 20,
-          status: 3
+          size: this.size,
+          status: this.status
         }
         this.getExaminedData(discountQuery)
       }
@@ -186,16 +248,16 @@ export default {
       this.changeStatus()
     },
     searchList() {
-      if (this.activeName === 'discount') {
+      if (this.status === 2) {
         if (this.searchForm) {
           const { discountApplicantName, tokenId, discountId, time, minAmount, maxAmount } = this.searchForm
           const discountQuery = {
             discountApplicantName,
             tokenId,
             discountId,
-            page: this.page,
+            page: 1,
             size: this.size,
-            status: 2,
+            status: this.status,
             minAmount,
             maxAmount
           }
@@ -208,20 +270,20 @@ export default {
           const discountQuery = {
             page: 1,
             size: 20,
-            status: 2
+            status: this.status
           }
           this.getDiscountData(discountQuery)
         }
-      } else if (this.activeName === 'examine') {
+      } else if (this.status === 1) {
         if (this.searchForm) {
           const { discountApplicantName, tokenId, discountId, time, minAmount, maxAmount } = this.searchForm
           const discountQuery = {
             discountApplicantName,
             tokenId,
             discountId,
-            page: this.page,
+            page: 1,
             size: this.size,
-            status: 1,
+            status: this.status,
             minAmount,
             maxAmount
           }
@@ -233,7 +295,7 @@ export default {
         } else {
           const discountQuery = {
             page: 1,
-            size: 20,
+            size: this.size,
             status: 1
           }
           this.getExamineData(discountQuery)
@@ -245,9 +307,9 @@ export default {
             discountApplicantName,
             tokenId,
             discountId,
-            page: this.page,
+            page: 1,
             size: this.size,
-            status: 3,
+            status: this.status,
             minAmount,
             maxAmount
           }
@@ -259,8 +321,8 @@ export default {
         } else {
           const discountQuery = {
             page: 1,
-            size: 20,
-            status: 3
+            size: this.size,
+            status: this.status
           }
           this.getExaminedData(discountQuery)
         }

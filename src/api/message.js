@@ -8,7 +8,7 @@ import request from '@/utils/request'
  */
 export function getMessageList(data) {
   return request({
-    url: '/api/notice/list',
+    url: '/notice/list',
     method: 'post',
     data
   })
@@ -19,7 +19,18 @@ export function getMessageList(data) {
  */
 export function setMessageReaded(data) {
   return request({
-    url: '/api/notice/noticed',
+    url: `/notice/noticed?id=${data}`,
+    method: 'get'
+  })
+}
+
+/**
+ * 全部设为已读
+ *
+ */
+export function setAllMessageReaded(data) {
+  return request({
+    url: '/notice/noticedAll',
     method: 'get',
     data
   })
@@ -30,8 +41,7 @@ export function setMessageReaded(data) {
  */
 export function deleteMessage(data) {
   return request({
-    url: '/api/notice/delete',
-    method: 'post',
-    data
+    url: `/notice/delete?id=${data}`,
+    method: 'post'
   })
 }

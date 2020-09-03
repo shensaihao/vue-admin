@@ -1,7 +1,7 @@
 <template>
-  <el-card class="my-card" shadow="hover">
+  <el-card v-loading="loading" class="my-card" shadow="hover">
     <el-button type="primary" class="m-b-20" @click="handelClickAdd">新增账户</el-button>
-    <el-table :data="collectionList" border style="width: 100%">
+    <el-table :data="collectionList" style="width: 100%" :row-class-name="defaultAccount">
       <el-table-column prop="accountName" label="账户名称" width="180" />
       <el-table-column prop="accountNumber" label="银行账号" width="180" />
       <el-table-column prop="bankName" label="所属银行" />
@@ -14,6 +14,7 @@
             @click.native.prevent="watchRecord(scope.$index, scope.row)"
           >查看对应的开票记录</el-button>
           <el-button
+            v-if="!scope.row.isDefault"
             type="text"
             size="small"
             class="m-l-10"
@@ -25,7 +26,7 @@
     <el-pagination
       :current-page="page"
       :page-sizes="[20, 50, 100, 150]"
-      :page-size="100"
+      :page-size="size"
       layout="total, sizes, prev, pager, next"
       :total="total"
       class="align-right"
@@ -83,21 +84,8 @@ export default {
       total: 0,
       page: 1,
       size: 20,
-      dialogVisible: false
-      // rules: {
-      //   name: [
-      //     { required: true, message: '请输入账户名称', trigger: 'blur' }
-      //   ],
-      //   number: [
-      //     { required: true, message: '请输入银行账户', trigger: 'change' }
-      //   ],
-      //   bank: [
-      //     { type: 'date', required: true, message: '请输入所属银行', trigger: 'change' }
-      //   ],
-      //   address: [
-      //     { type: 'date', required: true, message: '请输入开户行', trigger: 'change' }
-      //   ]
-      // }
+      dialogVisible: false,
+      loading: false
     }
   },
   created() {
@@ -105,6 +93,7 @@ export default {
   },
   methods: {
     getHistoryAcount() {
+      this.loading = true
       getHistoryAcount(this.page).then((res) => {
         this.collectionList = res.content.list
         this.total = res.content.count
@@ -113,20 +102,28 @@ export default {
           message: err,
           type: 'error'
         })
+      }).finally(() => {
+        this.loading = false
       })
+    },
+    defaultAccount({ row, rowIndex }) {
+      if (rowIndex === 0) {
+        return 'default-row'
+      }
     },
     handleSizeChange(size) {
       this.size = size
+      this.getHistoryAcount()
     },
     handleCurrentChange(page) {
       this.page = page
+      this.getHistoryAcount()
     },
     handelClickAdd() {
       this.dialogVisible = true
     },
     onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
-        console.log(valid)
         if (valid) {
           const bankAccount = this.ruleForm
           addNewAcount(bankAccount).then((res) => {
@@ -166,5 +163,8 @@ export default {
 }
 .account-button {
   margin-bottom: 20px;
+}
+.el-table .default-row {
+  background: #f4f4f5;
 }
 </style>

@@ -29,14 +29,18 @@
       <el-form-item v-model="transferForm.certUrl" label="我方汇款证明：" style="width: 400px">
         <el-upload
           drag
-          action="#"
+          action="/discount/applies/upload"
           :before-upload="beforeUpload"
           :show-file-list="true"
         >
           <i v-if="transferForm.certUrl===null" class="el-icon-upload" />
           <div v-if="transferForm.certUrl===null" class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           <div v-if="transferForm.certUrl===null" class="el-upload__text">支持扩展名：.pdf .jpg .png</div>
-          <el-image v-if="transferForm.certUrl!==null" :src="transferForm.certUrl" />
+          <el-image v-if="transferForm.certUrl!==null" :src="transferForm.certUrl">
+            <div slot="error" class="image-slot">
+              <i class="el-icon-picture-outline" />
+            </div>
+          </el-image>
         </el-upload>
       </el-form-item>
     </el-form>
@@ -73,7 +77,7 @@ export default {
       formDate.append('discountId', this.$route.query.id)
       formDate.append('file', file)
       discountAppliesUpload(formDate).then((res) => {
-        this.$emit('upload', res.responseMsg)
+        this.$emit('upload', res.content[0])
         this.$message.success('上传成功')
       }).catch(() => {
         this.$message.error('上传失败')

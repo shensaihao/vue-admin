@@ -1,12 +1,12 @@
 <template>
-  <el-dialog :visible.sync="dialogVisible" title="新增员工">
+  <el-dialog :visible.sync="dialogVisible" :before-close="handelClose" title="新增员工">
     <el-table :data="rolesList" style="width: 100%;margin-top:30px;margin-bottom: 30px">
-      <el-table-column label="员工登录账号" width="130" prop="accountNumber">
+      <el-table-column label="员工登录账号" width="130" prop="username">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-            <el-input v-model="scope.row.accountNumber" class="edit-input" size="small" />
+            <el-input v-model="scope.row.username" class="edit-input" size="small" />
           </template>
-          <span v-else>{{ scope.row.accountNumber }}</span>
+          <span v-else>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
       <el-table-column label="员工姓名" width="130" prop="realName">
@@ -36,7 +36,9 @@
       <el-table-column label="权限身份" width="130" prop="role">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-            <el-input v-model="scope.row.role" class="edit-input" size="small" />
+            <el-select v-model="scope.row.role" placeholder="请选择" size="small">
+              <el-option v-for="(item, index) in roles" :key="index" :label="item.role" :value="item.role" />
+            </el-select>
           </template>
           <span v-else>{{ scope.row.role }}</span>
         </template>
@@ -46,7 +48,7 @@
           <el-button v-if="scope.row.edit" type="primary" size="small" @click="confirmEdit(scope.row)">
             保存
           </el-button>
-          <el-button v-else type="danger" size="small" class="m-l-10" @click="handleDelete(scope)">删除</el-button>
+          <el-button v-else type="danger" size="small" class="m-l-10" @click="handleDelete(scope.$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,11 +66,17 @@ export default {
     dialogVisible: {
       type: Boolean,
       default: false
+    },
+    roles: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
     return {
-      rolesList: []
+      rolesList: [],
+      newList: [],
+      roleId: ''
     }
   },
   methods: {
@@ -76,10 +84,29 @@ export default {
       this.$emit('close')
     },
     confirmRole() {
-      this.$emit('addNewUser', this.rolesList)
+      this.$emit('addNewUser', this.newList)
     },
     confirmEdit(row) {
-      row.edit = false
+      if (row.username && row.realName && row.phone && row.password && row.role) {
+        const role = this.roles.filter(item => item.role === row.role)
+        const { roleId } = role[0]
+        console.log(row)
+        const { username, realName, phone, password } = row
+        this.newList.push({
+          username,
+          realName,
+          phone,
+          password,
+          role: roleId
+        })
+        row.edit = false
+      } else {
+        this.$message.error('请先完整填写账号信息')
+      }
+    },
+    handleDelete(index) {
+      this.newList.splice(index, 1)
+      this.rolesList.splice(index, 1)
     },
     handelAddNewUser() {
       this.rolesList.push({

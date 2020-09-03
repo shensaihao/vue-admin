@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-card class="my-card">
       <el-row :gutter="20">
         <el-col :span="6">
@@ -33,8 +33,9 @@
     <Application :detail="examineDetailInfo" />
     <Contract :detail="examineDetailInfo" />
     <div class="draft-detail-bottom-button">
-      <el-button v-if="active===1" type="primary" class="m-l-10" @click="handelClickNoticeBtn">催一下</el-button>
-      <el-button v-if="active===2" type="primary" class="m-l-10" @click="handelNoticed">已催</el-button>
+      <span v-if="active===1&&noticed" class="ft-zise-14 font-gray-color">4小时后可再次催办，紧急可电话联系</span>
+      <el-button v-if="active===1&&!noticed" type="primary" class="m-l-10" @click="handelClickNoticeBtn">催一下</el-button>
+      <el-button v-if="active===1&&noticed" type="primary" disabled class="m-l-10">已催</el-button>
       <el-popconfirm
         v-if="active===3"
         title="是否已确认申请信息准确无误？"
@@ -60,7 +61,7 @@ import Application from './component/Application/index'
 import Contract from './component/Contract/index'
 import Invoice from './component/Invoice/index'
 import Remittance from './component/Remittance/index'
-import { urgeOneAcceptance, acceptanceDetailInfo, confirmTransfer } from '@/api/bill'
+import { urgeOneAcceptance, acceptanceDetailInfo, confirmTransfer, acceptanceNextDetail } from '@/api/bill'
 
 export default {
   components: {
@@ -73,8 +74,13 @@ export default {
     return {
       urgingDialog: false,
       examineDetailInfo: {},
-      active: 1
+      active: 1,
+      noticed: false,
+      loading: false
     }
+  },
+  watch: {
+    $route: 'getExamineDetailInfo'
   },
   created() {
     const id = this.$route.query.id
@@ -82,6 +88,8 @@ export default {
   },
   methods: {
     getExamineDetailInfo(id) {
+      this.loading = true
+      if (id.query) id = this.$route.query.id
       acceptanceDetailInfo(id).then((res) => {
         if (res.content) {
           this.examineDetailInfo = res.content
@@ -99,6 +107,8 @@ export default {
           message: err,
           type: 'error'
         })
+      }).finally(() => {
+        this.loading = false
       })
     },
     back() {
@@ -112,6 +122,7 @@ export default {
       urgeOneAcceptance(id).then((res) => {
         this.$message.success('催办成功')
         this.getExamineDetailInfo(id)
+        this.noticed = true
       }).catch(() => {
         this.$message.error('催办失败，请刷新页面或再次催办')
       }).finally(() => {
@@ -128,7 +139,18 @@ export default {
       })
     },
     handelClickNextOne() {
-
+      acceptanceNextDetail(this.$route.query.id).then((res) => {
+        if (res.content) {
+          this.$router.replace({ path: '/bill/acceptance/detail', query: { id: res.content.id }})
+        } else {
+          this.$message.warning('暂无下一条')
+        }
+      }).catch((err) => {
+        this.$message({
+          message: err,
+          type: 'error'
+        })
+      })
     }
   }
 }

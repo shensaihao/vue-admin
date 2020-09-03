@@ -6,6 +6,7 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
+    roles: [],
     avatar: ''
   }
 }
@@ -24,6 +25,19 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
+  }
+}
+
+export const setUserRole = (res, commit) => {
+  console.log(res)
+  // 如果没有任何权限，则赋予一个默认的权限，避免请求死循环
+  if (res.length === 0) {
+    commit('SET_ROLES', ['admin'])
+  } else {
+    commit('SET_ROLES', res)
   }
 }
 
@@ -35,7 +49,9 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         if (response.responseCode === '00') {
           const { content } = response
+
           commit('SET_TOKEN', content.Authorization)
+          setUserRole(content.permission, commit)
           setToken(content.Authorization)
           resolve()
         } else {
@@ -75,6 +91,7 @@ const actions = {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
+        commit('SET_ROLES', [])
         resolve()
       }).catch(error => {
         reject(error)

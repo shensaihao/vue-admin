@@ -8,7 +8,7 @@
       </el-col>
       <el-col :span="8">
         <span class="display-inline-b width-150 ft-size-14 font-gray-color">我方转账日期：</span>
-        <span class="ft-size-14">{{ detail.remitterVO.total }}</span>
+        <span class="ft-size-14">{{ getDate(detail.remitterVO.transDate) }}</span>
       </el-col>
       <el-col :span="8">
         <span class="display-inline-b width-150 ft-size-12 font-gray-color">我方转账账户名称：</span>
@@ -26,7 +26,7 @@
       </el-col>
       <el-col :span="8">
         <span class="display-inline-b width-150 ft-size-12 font-gray-color">我方汇款证明：</span>
-        <span class="ft-size-12" @click="previewImage(detail.remitterVO.certUrl)">点击查看</span>
+        <span class="ft-size-12 cursor-pointer primary-color" @click="previewImage(detail.remitterVO.certUrl)">点击查看</span>
       </el-col>
     </el-row>
     <el-dialog
@@ -44,6 +44,10 @@
 </template>
 
 <script>
+import axios from 'axios'
+import qs from 'qs'
+import dayjs from 'dayjs'
+
 export default {
   props: {
     detail: {
@@ -61,9 +65,24 @@ export default {
     console.log(this.detail.remitterVO)
   },
   methods: {
+    getDate(time) {
+      if (time) {
+        return dayjs(time).format('YYYY-MM-DD')
+      } else {
+        return ''
+      }
+    },
     previewImage(image) {
-      this.dialogVisible = true
-      this.dialogImageUrl = image
+      axios.post('http://182.148.53.142:19837/partner/obtain_url', qs.stringify({ ossKey: image })).then((res) => {
+        if (res.data.code === 0) {
+          this.dialogVisible = true
+          this.dialogImageUrl = res.data.data
+        } else {
+          this.$message(res.data.message)
+        }
+      }).catch(() => {
+        this.$message('图片获取失败')
+      })
     }
   }
 }

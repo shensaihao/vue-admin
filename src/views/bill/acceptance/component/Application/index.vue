@@ -31,7 +31,7 @@
     </el-row>
     <el-row :gutter="20">
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-14 font-gray-color">保贴日利率：</span>
+        <span class="display-inline-b width-150 ft-size-14 color-error">保贴日利率：</span>
         <span class="ft-size-14">{{ detail.applyInfoVO.rate }}</span>
       </el-col>
       <el-col :span="8">
@@ -47,6 +47,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     detail: {

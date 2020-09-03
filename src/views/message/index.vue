@@ -3,41 +3,65 @@
     <div class="flex-start message-title-box">
       <el-checkbox @change="filterUnNotice">只看未读</el-checkbox>
       <el-divider direction="vertical" />
-      <el-button type="text" class="message-title-right ft-size-14" @click="setMessageReaded">
+      <el-button v-if="!edit" type="text" class="message-title-right ft-size-14" @click="setAllMessageReaded">
         全部标记为已读
       </el-button>
-      <el-divider direction="vertical" />
-      <el-button type="text" class="message-title-right ft-size-14" @click="handelClickNotRead">
+      <el-divider v-if="!edit" direction="vertical" />
+      <el-button v-if="!edit" type="text" class="message-title-right ft-size-14" @click="handelClickEdit">
         批量编辑
+      </el-button>
+      <el-button v-if="edit" type="primary" class="message-title-right ft-size-14" @click="handelNoticeItem">
+        标记为已读
+      </el-button>
+      <el-divider v-if="edit" direction="vertical" />
+      <el-button v-if="edit" class="message-title-right ft-size-14" @click="handelCancelEdit">
+        退出编辑
       </el-button>
     </div>
     <div class="message-list-wraper">
-      <ul
-        v-infinite-scroll="load"
-        infinite-scroll-disabled="disabled"
-        class="message-list-ul"
-      >
-        <li v-for="(item, index) in message" :key="index" class="message-list-item">
-          <div class="flex-between">
-            <el-badge class="message-item-image">
-              <el-image style="width: 40px; height: 40px; border-radius: 20px" fit="cover" />
+      <el-table ref="multipleTable" :data="message" :show-header="edit" @selection-change="handleSelectionChange">
+        <el-table-column
+          type="selection"
+          width="55"
+          label="全选"
+        />
+        <el-table-column
+          label=""
+        >
+          <template slot-scope="scope">
+            <el-badge :hidden="scope.row.status===2" is-dot class="item">
+              <el-avatar :size="40" src="https://empty">
+                <img :src="scope.row.url?scope.row.url:'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'">
+              </el-avatar>
             </el-badge>
-            <el-link :underline="false">
-              {{ item.content }}
-            </el-link>
-            <div class="font-gray-color ft-size-14">
-              {{ item.date }}
-            </div>
-          </div>
-          <el-divider />
-        </li>
-      </ul>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="info"
+          label=""
+        />
+        <el-table-column
+          prop="date"
+          label=""
+        >
+          <template slot-scope="scope">
+            {{ scope.row.date || '2010-07-07 10:10:10' }}
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="delete-button flex-end">
+      <el-button v-if="edit" class="message-title-right ft-size-14 m-l-10 m-t-10" @click="handelCancelDelete">
+        取消
+      </el-button>
+      <el-button v-if="edit" class="message-title-right ft-size-14 m-l-10 m-t-10" @click="handelClickDelete">
+        删除
+      </el-button>
     </div>
   </div>
 </template>
 
 <script>
-import { setMessageReaded, deleteMessage, getMessageList } from '@/api/message'
 
 export default {
   props: {
@@ -48,96 +72,58 @@ export default {
   },
   data() {
     return {
-      tableData: [],
-      messageList: [],
-      total: 0,
-      page: 1,
-      size: 20,
-      status: 1
+      edit: false,
+      multipleSelection: []
     }
   },
   created() {
-    const noticeQuery = {
-      page: 1,
-      size: 30,
-      status: this.status
-    }
-    this.getMessageList(noticeQuery)
   },
   methods: {
     load() {
-      const noticeQuery = {
-        page: this.page + 1,
-        size: 30,
-        status: this.status
-      }
-      this.getMessageList(noticeQuery)
+      this.$emit('load')
     },
-    getMessageList(noticeQuery) {
-      getMessageList(noticeQuery).then((res) => {
-        this.messageList = res.content
-      }).catch((err) => {
-        this.$message({
-          type: 'error',
-          message: err
-        })
-      })
-    },
-    filterUnNotice() {
-      this.status = 2
-      const noticeQuery = {
-        page: 1,
-        size: 30,
-        status: this.status
+    filterUnNotice(status) {
+      if (status === true) {
+        this.$emit('unNnotice')
+      } else {
+        this.$emit('all')
       }
-      this.getMessageList(noticeQuery)
+    },
+    handelClickEdit() {
+      this.edit = true
+    },
+    handelCancelEdit() {
+      this.edit = false
+    },
+    setAllMessageReaded() {
+      this.$emit('setall')
     },
     setMessageReaded() {
-      setMessageReaded().then((res) => {
-        this.getMessageList()
-      }).catch((err) => {
-        this.$message({
-          type: 'error',
-          message: err
-        })
-      })
+      this.$emit('setreaded', this.multipleSelection)
     },
-    deleteMessage() {
-      deleteMessage().then((res) => {
-        this.getMessageList()
-      }).catch((err) => {
-        this.$message({
-          type: 'error',
-          message: err
-        })
-      })
+    handleSelectionChange(val) {
+      this.multipleSelection = val
     },
-    handelChangeAll(type) {
-      if (type) {
-        // 全部已读
-      } else {
-        // else
-      }
+    handelClickDelete() {
+      this.$emit('delete', this.multipleSelection)
     },
-    handelClickNotRead() {
-      // 只看未读
-      // this.messageList.filter
+    handelCancelDelete() {
+      this.edit = false
+      this.multipleSelection = []
     },
-    handleSizeChange(size) {
-      this.size = size
-    },
-    handleCurrentChange(page) {
-      this.page = page
-    },
-    handelDelateClick(row) {
-      console.log(row)
-    },
-    handelClickMore() {
-      console.log('more')
-    },
-    clickDetail() {
-      this.$router.push('/')
+    handelNoticeItem() {
+      this.$emit('notice', this.multipleSelection)
     }
   }
 }
 </script>
+<style lang="scss">
+.el-badge__content.is-fixed{
+  top: 3px;
+}
+.delete-button{
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+</style>

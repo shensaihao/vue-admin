@@ -9,7 +9,7 @@
         </el-col>
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-12 font-gray-color">我方转账日期：</span>
-          <span class="ft-size-12">{{ detail.remitterVO.total }}</span>
+          <span class="ft-size-12">{{ getDate(detail.remitterVO.transDate) }}</span>
         </el-col>
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-12 font-gray-color">我方转账账户名称：</span>
@@ -40,7 +40,7 @@
         </el-col>
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-14 font-gray-color">申请贴现的token价值：</span>
-          <span class="ft-size-14">{{ detail.discountInfoVO.id }}</span>
+          <span class="ft-size-14">{{ detail.discountInfoVO.amount }}</span>
         </el-col>
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-12 font-gray-color">申请贴现日利率：</span>
@@ -63,7 +63,7 @@
       </el-row>
     </el-card>
     <el-card v-if="detail.tokenInfoVO" class="my-card">
-      <h3>Token流转记录（商票登记哈希：{{ detail.tokenInfoVO.amountUsed }}）</h3>
+      <h3>Token流转记录（商票登记哈希：{{ detail.draftReviewVO.draftHash }}）</h3>
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-14 font-gray-color">初始tokenID：</span>
@@ -95,15 +95,15 @@
     </el-card>
     <el-card v-if="detail.draftReviewVO" class="my-card">
       <h3 class="display-inline-b">开票信息（登记哈希：{{ detail.draftReviewVO.contractHash }}）</h3>
-      <span class="ft-size-12 primary-color cursor-pointer display-inline-b" @click="previewComplate">查看完整信息</span>
+      <span class="ft-size-12 primary-color cursor-pointer display-inline-b" @click="previewComplate(detail.draftReviewVO.draftId)">查看完整信息</span>
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-12 font-gray-color">申请通过时间：</span>
-          <span class="ft-size-12">{{ detail.draftReviewVO.draftAcceptTime }}</span>
+          <span class="ft-size-12">{{ getDate(detail.draftReviewVO.draftAcceptTime) }}</span>
         </el-col>
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-12 font-gray-color">汇票到期时间：</span>
-          <span class="ft-size-12">{{ detail.draftReviewVO.expireDate }}</span>
+          <span class="ft-size-12">{{ detail.draftReviewVO.acceptDate }}</span>
         </el-col>
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-12 font-gray-color">审核保贴日利率：</span>
@@ -128,7 +128,7 @@
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-14 font-gray-color">可贴现TOKEN初始ID：</span>
           <span class="ft-size-14">{{ detail.draftReviewVO.initialToken }}</span>
-          <span class="ft-size-12 primary-color cursor-pointer m-l-10 cursor-pointer" @click="previewRecord">查看贴现记录</span>
+          <span class="ft-size-14 primary-color m-l-10 cursor-pointer" @click="gotoRecord(detail.draftReviewVO.initialToken)">查看贴现记录</span>
         </el-col>
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-14 font-gray-color">保理机构业务员：</span>
@@ -136,7 +136,7 @@
         </el-col>
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-12 font-gray-color">保理机构联系方式：</span>
-          <span class="ft-size-12">{{ detail.draftReviewVO.managerPhone }}</span>
+          <span class="ft-size-12">{{ detail.draftReviewVO.companyPhone }}</span>
         </el-col>
       </el-row>
       <el-row :gutter="20">
@@ -170,6 +170,10 @@
 </template>
 
 <script>
+import axios from 'axios'
+import qs from 'qs'
+import dayjs from 'dayjs'
+
 export default {
   props: {
     detail: {
@@ -184,18 +188,33 @@ export default {
     }
   },
   methods: {
+    getDate(time) {
+      if (time) {
+        return dayjs(time).format('YYYY-MM-DD')
+      } else {
+        return ''
+      }
+    },
     previewImage(image) {
-      this.dialogVisible = true
-      this.dialogImageUrl = image
+      axios.post('http://182.148.53.142:19837/partner/obtain_url', qs.stringify({ ossKey: image })).then((res) => {
+        if (res.data.code === 0) {
+          this.dialogVisible = true
+          this.dialogImageUrl = res.data.data
+        } else {
+          this.$message(res.data.message)
+        }
+      }).catch(() => {
+        this.$message('图片获取失败')
+      })
     },
     handleClose() {
       this.dialogVisible = false
     },
-    previewRecord() {
-
+    gotoRecord(url) {
+      this.$router.push(`/discount/record?tokenId=${url}`)
     },
-    previewComplate() {
-
+    previewComplate(id) {
+      this.$router.push(`/bill/examine/detail?id=${id}`)
     }
   }
 

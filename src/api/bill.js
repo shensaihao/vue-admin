@@ -7,7 +7,7 @@ import request from '@/utils/request'
  */
 export function getExamineList(data) {
   return request({
-    url: '/api/draft/examine/search',
+    url: '/draft/examine/search',
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export function getExamineList(data) {
  */
 export function examineImage(data) {
   return request({
-    url: '/api/draft/examine/getDraftPic',
+    url: '/draft/examine/getDraftPic',
     method: 'post',
     data
   })
@@ -29,7 +29,7 @@ export function examineImage(data) {
  */
 export function examineCheckInfo(data) {
   return request({
-    url: '/api/draft/examine/checkInfo',
+    url: '/draft/examine/checkInfo',
     method: 'post',
     data
   })
@@ -40,7 +40,7 @@ export function examineCheckInfo(data) {
  */
 export function examineDetailInfo(data) {
   return request({
-    url: `/api/draft/examine/detail?id=${data}`,
+    url: `/draft/examine/detail?id=${data}`,
     method: 'get'
   })
 }
@@ -51,7 +51,7 @@ export function examineDetailInfo(data) {
  */
 export function draftExamineConfirm(data) {
   return request({
-    url: `/api/draft/examine/confirm`,
+    url: `/draft/examine/confirm`,
     method: 'post',
     data
   })
@@ -63,7 +63,7 @@ export function draftExamineConfirm(data) {
  */
 export function draftExamineFailed(data) {
   return request({
-    url: `/api/draft/examine/failed`,
+    url: `/draft/examine/failed`,
     method: 'post',
     data
   })
@@ -75,7 +75,7 @@ export function draftExamineFailed(data) {
  */
 export function draftExamineContract(data) {
   return request({
-    url: `/api/draft/examine/contract`,
+    url: `/draft/examine/contract`,
     method: 'post',
     data
   })
@@ -86,7 +86,7 @@ export function draftExamineContract(data) {
  */
 export function draftExamineDraftAcceptt(data) {
   return request({
-    url: `/api/draft/examine/draftAccept`,
+    url: `/draft/examine/draftAccept`,
     method: 'post',
     data
   })
@@ -97,9 +97,19 @@ export function draftExamineDraftAcceptt(data) {
  */
 export function draftExamineDraftDraftInfo(data) {
   return request({
-    url: `/api/draft/examine/draftInfo`,
+    url: `/draft/examine/draftInfo`,
     method: 'post',
     data
+  })
+}
+
+/**
+ * 下一条详情
+ */
+export function examineNextDetail(data) {
+  return request({
+    url: `/draft/examine/nextDetail?id=${data}`,
+    method: 'get'
   })
 }
 /** ********************票据承兑 */
@@ -109,7 +119,7 @@ export function draftExamineDraftDraftInfo(data) {
  */
 export function acceptanceList(data) {
   return request({
-    url: '/api/draft/acceptance/search',
+    url: '/draft/acceptance/search',
     method: 'post',
     data
   })
@@ -120,7 +130,7 @@ export function acceptanceList(data) {
  */
 export function searchAcceptanceList(data) {
   return request({
-    url: '/api/draft/acceptance/searchDraft',
+    url: '/draft/acceptance/searchDraft',
     method: 'post',
     data
   })
@@ -131,7 +141,7 @@ export function searchAcceptanceList(data) {
  */
 export function remittanceInfo(data) {
   return request({
-    url: '/api/draft/acceptance/remittanceInfo',
+    url: '/draft/acceptance/remittanceInfo',
     method: 'post',
     data
   })
@@ -142,7 +152,7 @@ export function remittanceInfo(data) {
  */
 export function urgeOneAcceptance(data) {
   return request({
-    url: `/api/draft/acceptance/notice?id=${data}`,
+    url: `/draft/acceptance/notice?id=${data}`,
     method: 'get'
   })
 }
@@ -152,7 +162,7 @@ export function urgeOneAcceptance(data) {
  */
 export function urgeAllAcceptance(data) {
   return request({
-    url: '/api/draft/acceptance/noticeAll',
+    url: '/draft/acceptance/noticeAll',
     method: 'get',
     data
   })
@@ -163,7 +173,7 @@ export function urgeAllAcceptance(data) {
  */
 export function confirmTransfer(data) {
   return request({
-    url: `/api/draft/acceptance/confirm?id=${data}`,
+    url: `/draft/acceptance/confirm?id=${data}`,
     method: 'get'
   })
 }
@@ -173,7 +183,17 @@ export function confirmTransfer(data) {
  */
 export function acceptanceDetailInfo(data) {
   return request({
-    url: `/api/draft/acceptance/detail?id=${data}`,
+    url: `/draft/acceptance/detail?id=${data}`,
+    method: 'get'
+  })
+}
+
+/**
+ * 下一条详情/draft/examine/nextDetail
+ */
+export function acceptanceNextDetail(data) {
+  return request({
+    url: `/draft/acceptance/nextDetail?id=${data}`,
     method: 'get'
   })
 }

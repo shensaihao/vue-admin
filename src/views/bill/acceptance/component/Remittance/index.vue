@@ -45,6 +45,9 @@
 </template>
 
 <script>
+import axios from 'axios'
+import qs from 'qs'
+
 export default {
   props: {
     detail: {
@@ -62,8 +65,16 @@ export default {
   },
   methods: {
     previewImage(image) {
-      this.dialogVisible = true
-      this.dialogImageUrl = image
+      axios.post('http://182.148.53.142:19837/partner/obtain_url', qs.stringify({ ossKey: image })).then((res) => {
+        if (res.data.code === 0) {
+          this.dialogVisible = true
+          this.dialogImageUrl = res.data.data
+        } else {
+          this.$message(res.data.message)
+        }
+      }).catch(() => {
+        this.$message('图片获取失败')
+      })
     },
     handleClose() {
       this.dialogVisible = false

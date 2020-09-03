@@ -5,11 +5,9 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
-      <div style="float: right;font-size:13px;color: #ccc">momo.xyz</div>
+
       <el-dropdown class="avatar-container" trigger="click" style="float: right;margin-right:10px">
-        <div class="avatar-wrapper">
-          <el-image :src="avatar" class="user-avatar" />
-        </div>
+        <div style="float: right;font-size:13px;color: #ccc" class="cursor-pointer">momo.xyz</div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
             <el-dropdown-item>
@@ -31,7 +29,16 @@
       direction="rtl"
       size="70%"
     >
-      <message :message="messageList" />
+      <message
+        :message="messageList"
+        @unNnotice="filterUnNotice"
+        @setall="setAllMessageReaded"
+        @setreaded="setMessageReaded"
+        @delete="deleteMessage"
+        @load="loadMessage"
+        @all="getAllMessageList"
+        @notice="noticeItem"
+      />
     </el-drawer>
   </div>
 </template>
@@ -41,7 +48,7 @@ import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import Message from '@/views/message/index'
-import { getMessageList } from '@/api/message'
+import { setMessageReaded, deleteMessage, getMessageList, setAllMessageReaded } from '@/api/message'
 
 export default {
   components: {
@@ -54,7 +61,8 @@ export default {
       isOpenMessage: false,
       messageList: [],
       page: 1,
-      size: 20
+      size: 9,
+      status: 1
     }
   },
   computed: {
@@ -64,7 +72,12 @@ export default {
     ])
   },
   created() {
-    this.getMessageList()
+    const noticeQuery = {
+      page: this.page,
+      size: this.size,
+      status: null // 1未读 2 已读
+    }
+    this.getMessageList(noticeQuery)
   },
   methods: {
     toggleSideBar() {
@@ -77,14 +90,99 @@ export default {
     openMessage() {
       this.isOpenMessage = true
     },
-    getMessageList() {
+    getMessageList(noticeQuery) {
+      getMessageList(noticeQuery).then((res) => {
+        if (res) {
+          this.messageList = res.content.list
+        }
+      }).catch((err) => {
+        this.$message({
+          type: 'error',
+          message: err
+        })
+      })
+    },
+    getAllMessageList() {
       const noticeQuery = {
         page: this.page,
         size: this.size,
-        status: 1 // 1已读 2 未读
+        status: null
       }
-      getMessageList(noticeQuery).then((res) => {
-        this.messageList = res.content.list
+      this.getMessageList(noticeQuery)
+    },
+    loadMessage() {
+      const noticeQuery = {
+        page: this.page,
+        size: this.size,
+        status: null
+      }
+      this.getMessageList(noticeQuery)
+    },
+    filterUnNotice() {
+      this.status = 1
+      const noticeQuery = {
+        page: 1,
+        size: 30,
+        status: this.status
+      }
+      this.getMessageList(noticeQuery)
+    },
+    noticeItem(list) {
+      const arr = []
+      list.map((item) => {
+        arr.push(item.id)
+      })
+      setMessageReaded(arr).then((res) => {
+        this.$message.success('操作成功')
+        const noticeQuery = {
+          page: 1,
+          size: 9
+        }
+        this.getMessageList(noticeQuery)
+      })
+    },
+    setAllMessageReaded() {
+      setAllMessageReaded().then((res) => {
+        this.$message.success('设置成功')
+        const noticeQuery = {
+          page: 1,
+          size: this.size,
+          status: null
+        }
+        this.getMessageList(noticeQuery)
+      }).catch(() => {
+        this.$message.error('设置失败')
+      })
+    },
+    setMessageReaded(list) {
+      const arr = []
+      list.map((item) => {
+        arr.push(item.id.toString())
+      })
+      setMessageReaded(arr).then((res) => {
+        const noticeQuery = {
+          page: 1,
+          size: this.size,
+          status: null
+        }
+        this.getMessageList(noticeQuery)
+        this.$message.success('设置成功')
+      }).catch(() => {
+        this.$message.error('设置失败')
+      })
+    },
+    deleteMessage(list) {
+      const arr = []
+      list.map((item) => {
+        arr.push(item.id)
+      })
+      deleteMessage(arr).then((res) => {
+        const noticeQuery = {
+          page: 1,
+          size: this.size,
+          status: null
+        }
+        this.getMessageList(noticeQuery)
       }).catch((err) => {
         this.$message({
           type: 'error',

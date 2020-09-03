@@ -1,14 +1,18 @@
 <template>
   <div>
-    <el-table :data="data" style="width: 100%">
-      <el-table-column prop="reviewId" label="申请编号" align="center" />
-      <el-table-column prop="applicationCreateTime" label="申请时间" align="center" />
+    <el-table v-loading="loading" :data="data" style="width: 100%">
+      <el-table-column prop="id" label="申请编号" align="center" />
+      <el-table-column prop="applicationCreateTime" label="申请时间" align="center">
+        <template slot-scope="scope">
+          {{ getDate(scope.row.applicationCreateTime) }}
+        </template>
+      </el-table-column>
       <el-table-column prop="passedTime" label="通过时间" align="center" />
-      <el-table-column prop="expireDate" label="票据到期日" align="center" />
+      <el-table-column prop="acceptDate" label="汇票到期日" align="center" />
       <!-- <el-table-column prop="address" label="距离到期日期还剩" align="center" /> -->
       <el-table-column prop="drawerName" label="商票签发企业" align="center" />
       <el-table-column prop="draweeName" label="商票转让企业" align="center" />
-      <el-table-column prop="total" sortable label="承兑金额" align="center" />
+      <el-table-column prop="acceptedAmount" sortable label="承兑金额" align="center" />
       <el-table-column prop="acceptanceStatus" label="票据状态" align="center">
         <template slot="header">
           <el-popover
@@ -70,12 +74,17 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
 export default {
   name: 'Confirmtable',
   props: {
     data: {
       type: Array,
       default: () => []
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -85,6 +94,13 @@ export default {
     }
   },
   methods: {
+    getDate(time) {
+      if (time) {
+        return dayjs(time).format('YYYY-MM-DD')
+      } else {
+        return ''
+      }
+    },
     handelFilterAcceptanceStatus() {
       this.$emit('filter', this.acceptanceStatusCheckList)
     },
