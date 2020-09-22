@@ -28,14 +28,14 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+    console.log(state.roles)
   }
 }
 
 export const setUserRole = (res, commit) => {
-  console.log(res)
   // 如果没有任何权限，则赋予一个默认的权限，避免请求死循环
   if (res.length === 0) {
-    commit('SET_ROLES', ['admin'])
+    commit('SET_ROLES', ['1'])
   } else {
     commit('SET_ROLES', res)
   }
@@ -44,19 +44,19 @@ export const setUserRole = (res, commit) => {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password, verifyCode, key } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ username: username.trim(), password: password, verifyCode: verifyCode, key: key }).then(response => {
         if (response.responseCode === '00') {
           const { content } = response
-
           commit('SET_TOKEN', content.Authorization)
-          setUserRole(content.permission, commit)
+          setUserRole(content.permission.permissionId, commit)
           setToken(content.Authorization)
           resolve()
         } else {
-          reject('用户名或密码错误')
+          // reject('用户名或密码错误')
         }
+        console.log(response.responseCode)
       }).catch(error => {
         reject(error)
       })

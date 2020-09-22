@@ -19,7 +19,7 @@
       </el-table-column>
       <el-table-column prop="tokenAmountDiscount" label="申请贴现金额" align="center" />
       <el-table-column prop="actualPayAmount" label="贴现金额" align="center" />
-      <el-table-column prop="interestRate" label="贴现日利率" align="center" />
+      <el-table-column prop="rate" label="贴现日利率" align="center" />
       <el-table-column prop="tokenId" label="贴现tokenid" align="center" />
       <!-- <el-table-column prop="status" label="状态" align="center">
         <template slot-scope="scope">

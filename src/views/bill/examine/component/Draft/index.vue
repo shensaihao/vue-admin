@@ -5,22 +5,22 @@
     </div>
     <el-row :gutter="20" class="m-b-20">
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">出票日期：</span>
-        <span class="ft-size-12">{{ detail.draftInfoVO.draftStartDate }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">出票日期：</span>
+        <span class="ft-size-14">{{ detail.draftInfoVO.draftStartDate }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">汇票到期时间：</span>
-        <span class="ft-size-12">{{ detail.draftInfoVO.acceptDate }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">汇票到期时间：</span>
+        <span class="ft-size-14">{{ detail.draftInfoVO.acceptDate }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 color-error">交易合同号：</span>
-        <span class="ft-size-12">{{ detail.draftInfoVO.draftContractNo }}</span>
+        <span class="display-inline-b width-150 ft-size-14 color-error">交易合同号：</span>
+        <span class="ft-size-14">{{ detail.draftInfoVO.draftContractNo }}</span>
       </el-col>
     </el-row>
     <el-row :gutter="20" class="m-b-20">
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 color-error">出票金额：</span>
-        <span class="ft-size-12">{{ detail.draftInfoVO.rptotal }}</span>
+        <span class="display-inline-b width-150 ft-size-14 color-error">出票金额：</span>
+        <span class="ft-size-14">{{ detail.draftInfoVO.rptotal }}</span>
       </el-col>
       <el-col :span="8">
         <span class="display-inline-b width-150 ft-size-14 font-gray-color">出票保证日期：</span>

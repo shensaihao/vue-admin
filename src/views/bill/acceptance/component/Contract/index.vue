@@ -5,32 +5,32 @@
       <div class="draft-detail-line" />
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">合同名称：</span>
-          <span class="ft-size-12">{{ detail.contractInfoVO.contractName }}</span>
-          <span class="ft-size-12 primary-color m-l-10 cursor-pointer" @click="previewImage(detail.contractInfoVO.contractUrl)">采购方合同</span>
-          <span class="ft-size-12 primary-color m-l-10 cursor-pointer" @click="previewImage(detail.contractInfoVO.supplierContractUrl)">供应商合同</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">合同名称：</span>
+          <span class="ft-size-14">{{ detail.contractInfoVO.contractName }}</span>
+          <span class="ft-size-14 primary-color m-l-10 cursor-pointer" @click="previewImage(detail.contractInfoVO.contractUrl)">采购方合同</span>
+          <span class="ft-size-14 primary-color m-l-10 cursor-pointer" @click="previewImage(detail.contractInfoVO.supplierContractUrl)">供应商合同</span>
         </el-col>
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">采购商品类型：</span>
-          <span class="ft-size-12">{{ detail.contractInfoVO.goods }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">采购商品类型：</span>
+          <span class="ft-size-14">{{ detail.contractInfoVO.goods }}</span>
         </el-col>
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">合同签订日期：</span>
-          <span class="ft-size-12">{{ getDate(detail.contractInfoVO.signDate) }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">合同签订日期：</span>
+          <span class="ft-size-14">{{ getDate(detail.contractInfoVO.signDate) }}</span>
         </el-col>
       </el-row>
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 color-error">已支付定金：</span>
-          <span class="ft-size-12">{{ detail.contractInfoVO.orderTotal }}</span>
+          <span class="display-inline-b width-150 ft-size-14 color-error">已支付定金：</span>
+          <span class="ft-size-14">{{ detail.contractInfoVO.orderTotal }}</span>
         </el-col>
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 color-erro">剩余应付款项：</span>
-          <span class="ft-size-12">{{ detail.contractInfoVO.rptotal }}</span>
+          <span class="display-inline-b width-150 ft-size-14 color-erro">剩余应付款项：</span>
+          <span class="ft-size-14">{{ detail.contractInfoVO.rptotal }}</span>
         </el-col>
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">应付款项时限：</span>
-          <span class="ft-size-12">{{ detail.contractInfoVO.acceptDate }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">应付款项时限：</span>
+          <span class="ft-size-14">{{ detail.contractInfoVO.acceptDate }}</span>
         </el-col>
       </el-row>
     </el-card>
@@ -40,22 +40,22 @@
       </div>
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">出票日期：</span>
-          <span class="ft-size-12">{{ detail.draftInfoVO.draftStartDate }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">出票日期：</span>
+          <span class="ft-size-14">{{ detail.draftInfoVO.draftStartDate }}</span>
         </el-col>
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">汇票到期时间：</span>
-          <span class="ft-size-12">{{ detail.draftInfoVO.acceptDate }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">汇票到期时间：</span>
+          <span class="ft-size-14">{{ detail.draftInfoVO.acceptDate }}</span>
         </el-col>
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 color-erro">交易合同号：</span>
-          <span class="ft-size-12">{{ detail.draftInfoVO.draftContractNo }}</span>
+          <span class="display-inline-b width-150 ft-size-14 color-erro">交易合同号：</span>
+          <span class="ft-size-14">{{ detail.draftInfoVO.draftContractNo }}</span>
         </el-col>
       </el-row>
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 color-error">出票金额：</span>
-          <span class="ft-size-12">{{ detail.draftInfoVO.rptotal }}</span>
+          <span class="display-inline-b width-150 ft-size-14 color-error">出票金额：</span>
+          <span class="ft-size-14">{{ detail.draftInfoVO.rptotal }}</span>
         </el-col>
         <el-col :span="8">
           <span class="display-inline-b width-150 ft-size-14 font-gray-color">出票保证日期：</span>

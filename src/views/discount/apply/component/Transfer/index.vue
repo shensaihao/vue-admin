@@ -29,7 +29,7 @@
       <el-form-item v-model="transferForm.certUrl" label="我方汇款证明：" style="width: 400px">
         <el-upload
           drag
-          action="/discount/applies/upload"
+          action="''"
           :before-upload="beforeUpload"
           :show-file-list="true"
         >

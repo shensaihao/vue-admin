@@ -21,8 +21,8 @@
           <el-input v-model="searchForm.initialToken" placeholder="请输入" style="width:200px" size="small" class="m-l-10" />
         </el-col>
         <el-col :span="8" class="flex-start">
-          <el-button class="m-b-20" size="small" type="primary" @click="searchList">搜索</el-button>
-          <el-button class="m-l-10 m-b-20" size="small" @click="resetList">重置</el-button>
+          <el-button class="m-b-20" size="small" type="primary" style="width:30%" @click="searchList">搜索</el-button>
+          <el-button class="m-l-10 m-b-20" size="small" style="width:30%" @click="resetList">重置</el-button>
         </el-col>
       </el-row>
     </el-card>
@@ -44,7 +44,7 @@
         <el-table-column prop="initialToken" label="商票初始tokenid" align="center" />
         <el-table-column prop="tokenAmountDiscount" label="申请贴现金额" align="center" />
         <el-table-column prop="actualPayAmount" label="转账金额" align="center" />
-        <el-table-column prop="interestRate" label="日利率" align="center" />
+        <el-table-column prop="rate" label="日利率" align="center" />
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button

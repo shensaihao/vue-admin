@@ -3,30 +3,30 @@
     <h3>汇款信息</h3>
     <el-row :gutter="20" class="m-b-20">
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">汇款人账户名称：</span>
-        <span class="ft-size-12">{{ detail.remitterVO.accountName }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">汇款人账户名称：</span>
+        <span class="ft-size-14">{{ detail.remitterVO.accountName }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">汇款账号：</span>
-        <span class="ft-size-12">{{ detail.remitterVO.accountNo }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">汇款账号：</span>
+        <span class="ft-size-14">{{ detail.remitterVO.accountNo }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">汇款人开户行：</span>
-        <span class="ft-size-12">{{ detail.remitterVO.accountBank }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">汇款人开户行：</span>
+        <span class="ft-size-14">{{ detail.remitterVO.accountBank }}</span>
       </el-col>
     </el-row>
     <el-row :gutter="20" class="m-b-20">
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">汇款金额：</span>
-        <span class="ft-size-12">{{ detail.remitterVO.total }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">汇款金额：</span>
+        <span class="ft-size-14">{{ detail.remitterVO.total }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">汇款订单号：</span>
-        <span class="ft-size-12">{{ detail.remitterVO.no }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">汇款订单号：</span>
+        <span class="ft-size-14">{{ detail.remitterVO.no }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">汇款证明：</span>
-        <span class="ft-size-12 primary-color cursor-pointer" @click="previewImage(detail.remitterVO.certUrl)">查看汇款证明</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">汇款证明：</span>
+        <span class="ft-size-14 primary-color cursor-pointer" @click="previewImage(detail.remitterVO.certUrl)">查看汇款证明</span>
       </el-col>
     </el-row>
     <el-dialog

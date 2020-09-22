@@ -53,12 +53,12 @@ export function login(data) {
  * 验证码
  *
  */
-// export function getCodeImg() {
-//   return request({
-//     url: '/code',
-//     method: 'get'
-//   })
-// }
+export function getCodeImg() {
+  return request({
+    url: '/getCode',
+    method: 'get'
+  })
+}
 
 /**
  * 退出

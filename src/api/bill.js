@@ -197,3 +197,23 @@ export function acceptanceNextDetail(data) {
     method: 'get'
   })
 }
+
+/**
+ * 上链时间
+ */
+export function examineGetToken(data) {
+  return request({
+    url: `/draft/examine/getToken?tokenId=${data}`,
+    method: 'get'
+  })
+}
+
+/**
+ * 上链hash
+ */
+export function examineGetHash(data) {
+  return request({
+    url: `/draft/examine/getHash?draftReviewId=${data}`,
+    method: 'get'
+  })
+}

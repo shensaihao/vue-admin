@@ -12,8 +12,8 @@
         <span class="ft-size-14">{{ detail.discountInfoVO.amount }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">申请贴现日利率：</span>
-        <span class="ft-size-12">{{ detail.discountInfoVO.interestRate }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">申请贴现日利率：</span>
+        <span class="ft-size-14">{{ detail.discountInfoVO.interestRate }}</span>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -26,8 +26,8 @@
         <span class="ft-size-14">{{ detail.discountInfoVO.accountNo }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">申请人开户行：</span>
-        <span class="ft-size-12">{{ detail.discountInfoVO.accountBank }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">申请人开户行：</span>
+        <span class="ft-size-14">{{ detail.discountInfoVO.accountBank }}</span>
       </el-col>
     </el-row>
   </el-card>

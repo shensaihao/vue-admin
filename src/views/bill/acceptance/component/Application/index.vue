@@ -1,47 +1,47 @@
 <template>
   <el-card v-if="detail.applyInfoVO" class="my-card">
-    <div class="draft-detail-title">申请信息（编号:{{ detail.applyInfoVO.id }}）</div>
+    <div class="draft-detail-title m-t-20">申请信息（编号:{{ detail.applyInfoVO.id }}）</div>
     <div class="draft-detail-line" />
     <el-row :gutter="20" class="m-b-20">
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">申请开票额度：</span>
-        <span class="ft-size-12">{{ detail.applyInfoVO.total }}</span>
+        <span class="display-inline-b width-150 ft-size-142 font-gray-color">申请开票额度：</span>
+        <span class="ft-size-142">{{ detail.applyInfoVO.total }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">受信企业/承兑企业：</span>
-        <span class="ft-size-12">{{ detail.applyInfoVO.drawerName }}</span>
+        <span class="display-inline-b width-150 ft-size-142 font-gray-color">受信企业/承兑企业：</span>
+        <span class="ft-size-142">{{ detail.applyInfoVO.drawerName }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">供应商：</span>
-        <span class="ft-size-12">{{ detail.applyInfoVO.draweeName }}</span>
+        <span class="display-inline-b width-150 ft-size-142 font-gray-color">供应商：</span>
+        <span class="ft-size-142">{{ detail.applyInfoVO.draweeName }}</span>
       </el-col>
     </el-row>
     <el-row :gutter="20" class="m-b-20">
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">汇票到期日：</span>
-        <span class="ft-size-12">{{ detail.applyInfoVO.expireDate }}</span>
+        <span class="display-inline-b width-150 ft-size-142 font-gray-color">汇票到期日：</span>
+        <span class="ft-size-142">{{ detail.applyInfoVO.acceptDate }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">受信企业联系人：</span>
-        <span class="ft-size-12">{{ detail.applyInfoVO.drawerManagerName }}</span>
+        <span class="display-inline-b width-150 ft-size-142 font-gray-color">受信企业联系人：</span>
+        <span class="ft-size-142">{{ detail.applyInfoVO.drawerManagerName }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">供应商企业联系人：</span>
-        <span class="ft-size-12">{{ detail.applyInfoVO.draweeManagerName }}</span>
+        <span class="display-inline-b width-150 ft-size-142 font-gray-color">供应商企业联系人：</span>
+        <span class="ft-size-142">{{ detail.applyInfoVO.draweeManagerName }}</span>
       </el-col>
     </el-row>
     <el-row :gutter="20">
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-14 color-error">保贴日利率：</span>
-        <span class="ft-size-14">{{ detail.applyInfoVO.rate }}</span>
+        <span class="display-inline-b width-150 ft-size-144 color-error">保贴日利率：</span>
+        <span class="ft-size-144">{{ detail.applyInfoVO.rate }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-14 font-gray-color">受信企业联系方式：</span>
-        <span class="ft-size-14">{{ detail.applyInfoVO.drawerManagerPhone }}</span>
+        <span class="display-inline-b width-150 ft-size-144 font-gray-color">受信企业联系方式：</span>
+        <span class="ft-size-144">{{ detail.applyInfoVO.drawerManagerPhone }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">供应商企业联系方式：</span>
-        <span class="ft-size-12">{{ detail.applyInfoVO.draweeManagerPhone }}</span>
+        <span class="display-inline-b width-150 ft-size-142 font-gray-color">供应商企业联系方式：</span>
+        <span class="ft-size-142">{{ detail.applyInfoVO.draweeManagerPhone }}</span>
       </el-col>
     </el-row>
   </el-card>

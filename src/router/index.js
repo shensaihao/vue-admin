@@ -51,7 +51,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '首页', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'home' }
     }]
   },
 
@@ -62,14 +62,14 @@ export const constantRoutes = [
     name: 'Bill',
     meta: {
       title: '票据管理',
-      icon: 'nested'
+      icon: 'draft'
     },
     children: [
       {
         path: '/bill/examine',
         component: () => import('@/views/bill/examine/index'), // Parent router-view
         name: 'BillExamine',
-        meta: { title: '票据审核', badge: true }
+        meta: { title: '票据审核' }
       },
       {
         path: '/bill/examine/detail',
@@ -82,7 +82,7 @@ export const constantRoutes = [
         path: '/bill/acceptance',
         component: () => import('@/views/bill/acceptance/index'),
         name: 'BillAcceptance',
-        meta: { title: '票据承兑', badge: true }
+        meta: { title: '票据承兑' }
       },
       {
         path: '/bill/acceptance/detail',
@@ -101,14 +101,14 @@ export const constantRoutes = [
     name: 'Discount',
     meta: {
       title: '贴现管理',
-      icon: 'nested'
+      icon: 'discount'
     },
     children: [
       {
         path: '/discount/apply',
         component: () => import('@/views/discount/apply/index'), // Parent router-view
         name: 'DiscountApply',
-        meta: { title: '贴现申请审核', badge: true }
+        meta: { title: '贴现申请审核' }
       },
       {
         path: '/discount/apply/detail',
@@ -140,14 +140,14 @@ export const constantRoutes = [
     name: 'Quota',
     meta: {
       title: '额度管理',
-      icon: 'nested'
+      icon: 'quota'
     },
     children: [
       {
         path: '/enterprise/list',
         name: 'Enterprise',
         component: () => import('@/views/quota/index'),
-        meta: { title: '受信企业列表', icon: 'form' }
+        meta: { title: '受信企业列表' }
       },
       /* 不添加meta，只为渲染菜单，不展示页面及路由 */
       {
@@ -165,7 +165,7 @@ export const constantRoutes = [
     name: 'Account',
     meta: {
       title: '账号管理',
-      icon: 'nested'
+      icon: 'system'
     },
     children: [
       {

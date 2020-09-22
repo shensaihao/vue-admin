@@ -80,7 +80,7 @@
               调整后企业总额度：{{ limit }}元
             </div>
             <div class="m-b-20">
-              调整后企业可用额度：{{ limit - companyQuery.limitUsed <= 0 ? 0: limit - companyQuery.limitUsed }}元
+              调整后企业可用额度：{{ limit - companyQuery.limitUsed <= 0 ? 0 : limit - companyQuery.limitUsed }}元
             </div>
             <div class="m-b-20">
               当前企业已占用额度：{{ companyQuery.limitUsed }}元

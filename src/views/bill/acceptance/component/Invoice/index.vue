@@ -5,30 +5,30 @@
       <div class="draft-detail-line" />
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">申请通过时间：</span>
-          <span class="ft-size-12">{{ getDate(detail.draftReviewVO.draftAcceptTime) }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">申请通过时间：</span>
+          <span class="ft-size-14">{{ getDate(detail.draftReviewVO.draftAcceptTime) }}</span>
         </el-col>
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">汇票到期时间：</span>
-          <span class="ft-size-12">{{ detail.draftReviewVO.acceptDate }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">汇票到期时间：</span>
+          <span class="ft-size-14">{{ detail.draftReviewVO.acceptDate }}</span>
         </el-col>
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">审核保贴日利率：</span>
-          <span class="ft-size-12">{{ detail.draftReviewVO.rate }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">审核保贴日利率：</span>
+          <span class="ft-size-14">{{ detail.draftReviewVO.rate }}</span>
         </el-col>
       </el-row>
       <el-row :gutter="20" class="m-b-20">
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">可贴现TOKEN合约：</span>
-          <span class="ft-size-12">{{ detail.draftReviewVO.tokenContractUrl }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">可贴现TOKEN合约：</span>
+          <span class="ft-size-14">{{ detail.draftReviewVO.tokenContractUrl }}</span>
         </el-col>
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">合同登记哈希：</span>
-          <span class="ft-size-12">{{ detail.draftReviewVO.contractHash }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">合同登记哈希：</span>
+          <span class="ft-size-14">{{ detail.draftReviewVO.contractHash }}</span>
         </el-col>
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">商票登记哈希：</span>
-          <span class="ft-size-12">{{ detail.draftReviewVO.draftHash }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">商票登记哈希：</span>
+          <span class="ft-size-14">{{ detail.draftReviewVO.draftHash }}</span>
         </el-col>
       </el-row>
       <el-row :gutter="20" class="m-b-20">
@@ -42,8 +42,8 @@
           <span class="ft-size-14">{{ detail.draftReviewVO.manager }}</span>
         </el-col>
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">保理机构联系方式：</span>
-          <span class="ft-size-12">{{ detail.draftReviewVO.companyPhone }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">保理机构联系方式：</span>
+          <span class="ft-size-14">{{ detail.draftReviewVO.companyPhone }}</span>
         </el-col>
       </el-row>
       <el-row :gutter="20">
@@ -56,8 +56,8 @@
           <span class="ft-size-14">{{ detail.draftReviewVO.accountNumber }}</span>
         </el-col>
         <el-col :span="8">
-          <span class="display-inline-b width-150 ft-size-12 font-gray-color">保理机构开户行：</span>
-          <span class="ft-size-12">{{ detail.draftReviewVO.bankAddress }}</span>
+          <span class="display-inline-b width-150 ft-size-14 font-gray-color">保理机构开户行：</span>
+          <span class="ft-size-14">{{ detail.draftReviewVO.bankAddress }}</span>
         </el-col>
       </el-row>
     </el-card>

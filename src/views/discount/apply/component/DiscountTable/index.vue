@@ -14,9 +14,13 @@
       </el-table-column>
       <el-table-column prop="tokenId" label="申请贴现的tokenid" align="center" />
       <el-table-column prop="tokenAmountDiscount" label="申请贴现金额" align="center" />
-      <el-table-column prop="acceptDate" label="商票承兑日期" align="center" />
-      <el-table-column prop="interestRate" label="日利率" align="center" />
-      <el-table-column prop="amount" label="原始商票面额" align="center" />
+      <el-table-column prop="acceptDate" label="商票承兑日期" align="center">
+        <template slot-scope="scope">
+          {{ getDate(scope.row.acceptDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="rate" label="日利率" align="center" />
+      <el-table-column prop="rptotal" label="原始商票面额" align="center" />
       <el-table-column prop="checkUserName" label="审核人员" align="center" />
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">

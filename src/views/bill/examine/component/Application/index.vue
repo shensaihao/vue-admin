@@ -1,5 +1,5 @@
 <template>
-  <el-card v-if="detail.applyInfoVO" class="my-card" :body-style="{padding: '0 20px 20px 20px'}">
+  <el-card v-if="detail.applyInfoVO" class="my-card">
     <div class="draft-detail-title">申请信息（编号:{{ detail.applyInfoVO.id }}）</div>
     <div class="draft-detail-line" />
     <el-row :gutter="20" class="m-b-20">
@@ -12,22 +12,22 @@
         <span class="ft-size-14">{{ detail.applyInfoVO.drawerName }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">供应商：</span>
-        <span class="ft-size-12">{{ detail.applyInfoVO.draweeName }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">供应商：</span>
+        <span class="ft-size-14">{{ detail.applyInfoVO.draweeName }}</span>
       </el-col>
     </el-row>
     <el-row :gutter="20" class="m-b-20">
       <el-col :span="8">
         <span class="display-inline-b width-150 ft-size-14 font-gray-color">汇票到期日：</span>
-        <span class="ft-size-14">{{ detail.applyInfoVO.expireDate }}</span>
+        <span class="ft-size-14">{{ detail.applyInfoVO.acceptDate }}</span>
       </el-col>
       <el-col :span="8">
         <span class="display-inline-b width-150 ft-size-14 font-gray-color">受信企业联系人：</span>
         <span class="ft-size-14">{{ detail.applyInfoVO.drawerManagerName }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">供应商企业联系人：</span>
-        <span class="ft-size-12">{{ detail.applyInfoVO.draweeManagerName }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">供应商企业联系人：</span>
+        <span class="ft-size-14">{{ detail.applyInfoVO.draweeManagerName }}</span>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -40,8 +40,8 @@
         <span class="ft-size-14">{{ detail.applyInfoVO.drawerManagerPhone }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">供应商企业联系方式：</span>
-        <span class="ft-size-12">{{ detail.applyInfoVO.draweeManagerPhone }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">供应商企业联系方式：</span>
+        <span class="ft-size-14">{{ detail.applyInfoVO.draweeManagerPhone }}</span>
       </el-col>
     </el-row>
   </el-card>

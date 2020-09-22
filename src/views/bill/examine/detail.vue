@@ -4,13 +4,17 @@
     <!-- <div>
       <el-button type="text" icon="el-icon-arrow-left" @click="back">返回上一页</el-button>
     </div> -->
-    <el-card class="my-card">
+    <el-card class="my-card" align-center>
       <el-steps :active="active">
-        <el-step title="提交开票申请" description="" />
-        <el-step title="确认合同信息" description="" />
-        <el-step title="确认商票信息" description="" />
-        <el-step title="审核开票" description="" />
-        <el-step title="完成" description="" />
+        <el-step title="提交开票申请" description="" icon="el-icon-success" />
+        <el-step title="确认合同信息" description="" icon="el-icon-success" />
+        <el-step title="确认商票信息" description="" icon="el-icon-success" />
+        <el-step title="审核开票" description="" icon="el-icon-success" />
+        <el-step title="完成" class="step_finish">
+          <template slot="icon">
+            <i class="end_success_icon" />
+          </template>
+        </el-step>
       </el-steps>
     </el-card>
     <el-card v-if="unpass" class="flex-column-center my-card text-center" body-style="width: 100%">
@@ -26,42 +30,28 @@
     </el-card>
     <div v-if="active===5&&!unpass" class="flex-center my-card p-y-40" body-style="width: 100%">
       <div class="m-r-60">
-        <img src="../../../assets/images/draft_success_img.png" alt="">
+        <img src="@/assets/images/draft_success_img.png" alt="">
       </div>
       <div>
-        <div class="flex-start">
-          <img src="../../../assets/images/draft_success.png" alt="">
-          <div class="m-l-10 m-b-10">开票信息登记成功</div>
+        <div class="flex-start m-b-10 ft-size-12 color-gray">
+          <img v-if="processStep > 1" src="@/assets/images/draft_success.png" alt="">
+          <img v-if="processStep === 1" class="step_icon_loading" src="@/assets/images/draft_pending.png" alt="">
+          <div class="m-l-10" :class="{'color-blue':processStep > 1}">{{ processinfo.step1 }}</div>
         </div>
-        <div class="flex-start">
-          <img src="../../../assets/images/draft_pending.png" alt="">
-          <div class="m-l-10 m-b-10 m-t-10">正在发行区块链通证……</div>
+        <div class="flex-start m-b-10 m-t-10 ft-size-12 color-gray">
+          <img v-if="processStep > 2" src="@/assets/images/draft_success.png" alt="">
+          <img v-if="processStep === 2" class="step_icon_loading" src="@/assets/images/draft_pending.png" alt="">
+          <img v-if="processStep < 2" src="@/assets/images/draft_loading.png" alt="">
+          <div class="m-l-10" :class="{'color-blue':processStep > 2}">{{ processinfo.step2 }}</div>
         </div>
-        <div class="flex-start">
-          <img src="../../../assets/images/draft_loading.png" alt="">
-          <div class="m-l-10 m-t-10">等待将通证发送至商票转让者……</div>
+        <div class="flex-start m-t-10 ft-size-12 color-gray">
+          <img v-if="processStep > 3" src="@/assets/images/draft_success.png" alt="">
+          <img v-if="processStep === 3" class="step_icon_loading" src="@/assets/images/draft_pending.png" alt="">
+          <img v-if="processStep < 3" src="@/assets/images/draft_loading.png" alt="">
+          <div class="m-l-10" :class="{'color-blue':processStep > 3}">{{ processinfo.step3 }}</div>
         </div>
       </div>
     </div>
-    <!-- <el-card v-if="active===4&&!unpass" class="flex-column-center my-card" body-style="width: 100%;" style="background: #E8EFF7">
-      <div class="flex-start">
-        <i class="el-icon-info ft-size-20 font-weight color-primary m-r-30" />
-        <div class="m-b-20 ft-size-14">
-          1、请确认核心企业额度足够；
-        </div>
-        <div class="m-b-20 m-l-30 ft-size-14">
-          2、请确认贴现日利率无误；
-        </div>
-      </div>
-      <div class="flex-start m-l-30 ft-size-14">
-        <div class="m-b-20">
-          3、请与核心企业和供应商联系人确认开票申请真实存在；
-        </div>
-        <div class="m-b-20 m-l-30 ft-size-14">
-          4、请确认收款账户确认无误；
-        </div>
-      </div>
-    </el-card> -->
     <Invoice v-if="active===5&&!unpass" :detail="examineDetailInfo" />
     <Application :detail="examineDetailInfo" />
     <Contract :detail="examineDetailInfo" />
@@ -132,9 +122,10 @@
           type="primary"
           class="m-b-20 width-100"
           :disabled="invoiceList.length!==4"
+          style="margin-bottom: 10px"
           @click="confirmEditInvoice"
         >确认开票</el-button>
-        <el-button class="width-100" @click="invoiceDialog=false">我再核实一下</el-button>
+        <el-button style="margin-left: 0 !important" class="width-100" @click="invoiceDialog=false">我再核实一下</el-button>
       </div>
     </el-dialog>
     <el-dialog
@@ -191,7 +182,13 @@ export default {
       hasDraftInfoCollspan: false,
       noPassComment: '',
       unpass: false,
-      loading: false
+      loading: false,
+      processStep: 4,
+      processinfo: {
+        step1: '开票信息登记成功',
+        step2: '区块链通证已发行',
+        step3: '通证已发送至商票转让者'
+      }
     }
   },
   watch: {
@@ -209,12 +206,30 @@ export default {
         if (res.content) {
           this.examineDetailInfo = res.content
           if (res.content.contract) {
+            this.processStep = 1
+            this.processinfo = {
+              step1: '正在登记开票信息...',
+              step2: '等待发行区块链通证',
+              step3: '等待将通证发送至商票转让者'
+            }
             this.active = 3
           }
           if (res.content.draftInfo) {
+            this.processStep = 1
+            this.processinfo = {
+              step1: '正在登记开票信息...',
+              step2: '等待发行区块链通证',
+              step3: '等待将通证发送至商票转让者'
+            }
             this.active = 4
           }
           if (res.content.draftAccept) {
+            this.processStep = 4
+            this.processinfo = {
+              step1: '开票信息登记成功',
+              step2: '区块链通证已发行',
+              step3: '通证已发送至商票转让者'
+            }
             this.active = 5
           }
           if (res.content.noPassComment) {
@@ -237,6 +252,34 @@ export default {
     },
     hadelDraftInfoCollspan() {
       this.hasDraftInfoCollspan = !this.hasDraftInfoCollspan
+    },
+    handelStartAnimate() {
+      setInterval(() => {
+        if (this.processStep < 4) {
+          if (this.processStep === 1) {
+            this.processinfo = {
+              step1: '开票信息登记成功',
+              step2: '正在发行区块链通证...',
+              step3: '等待将通证发送至商票转让者'
+            }
+          }
+          if (this.processStep === 2) {
+            this.processinfo = {
+              step1: '开票信息登记成功',
+              step2: '区块链通证已发行',
+              step3: '正在将通证发送至商票转让者...'
+            }
+          }
+          this.processStep += 1
+        }
+        if (this.processStep === 3) {
+          this.processinfo = {
+            step1: '开票信息登记成功',
+            step2: '区块链通证已发行',
+            step3: '通证已发送至商票转让者'
+          }
+        }
+      }, 2000)
     },
     // back() {
     //   this.$router.go(-1)
@@ -304,7 +347,7 @@ export default {
       }
       draftExamineDraftAcceptt(ConfirmParam).then((res) => {
         this.active += 1
-        this.$message.success('开票成功')
+        this.handelStartAnimate()
       })
         .catch(() => {
           this.$message.error('审核开票失败，请检查网络或刷新页面')
@@ -351,5 +394,53 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.step_finish{
+  .el-step__head.is-finish {
+    border-color: #FFFFFF !important;
+  }
+  .el-step__head.is-process {
+    .end_success_icon {
+      background: #303133;
+    }
+  }
+  .el-step__head.is-wait {
+    .end_success_icon {
+      background: #C0C4CC;
+    }
+
+  }
+}
+.end_success_icon {
+    width: 12px;
+    height: 12px;
+    background: #0072FF;
+    // border: 8px solid #EFF1F7;
+    box-shadow: 0px 7px 10px 0px rgba(93, 123, 160, 0.4);
+    border-radius: 50%;
+}
+
+/*无限旋转动画*/
+
+@keyframes changDeg{
+
+0%{
+
+transform: rotate(0deg);
+
+}
+
+100%{
+
+transform: rotate(360deg);
+
+}
+
+}
+.step_icon_loading {
+  animation: changDeg 2s linear 0.2s infinite;
+}
+.color-blue{
+  color: #0072FF
+}
 </style>

@@ -12,8 +12,8 @@
         <span class="ft-size-14">{{ getDate(detail.remitterVO.transDate) }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">我方转账账户名称：</span>
-        <span class="ft-size-12">{{ detail.remitterVO.accountName }}</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">我方转账账户名称：</span>
+        <span class="ft-size-14">{{ detail.remitterVO.accountName }}</span>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -26,8 +26,8 @@
         <span class="ft-size-14">{{ detail.remitterVO.no }}</span>
       </el-col>
       <el-col :span="8">
-        <span class="display-inline-b width-150 ft-size-12 font-gray-color">我方汇款证明：</span>
-        <span class="ft-size-12 cursor-pointer primary-color" @click="previewImage(detail.remitterVO.certUrl)">点击查看</span>
+        <span class="display-inline-b width-150 ft-size-14 font-gray-color">我方汇款证明：</span>
+        <span class="ft-size-14 cursor-pointer primary-color" @click="previewImage(detail.remitterVO.certUrl)">点击查看</span>
       </el-col>
     </el-row>
     <el-dialog

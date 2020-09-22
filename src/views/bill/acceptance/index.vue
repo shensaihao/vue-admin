@@ -31,12 +31,12 @@
         </el-col>
         <el-col :span="7">
           <span class="ft-size-14 display-inline-b width-110">承兑金额：</span>
-          <el-input v-model.number="searchForm.minAmount" placeholder="最小" style="width:100px" size="small" class="m-l-10" />
-          <el-input v-model.number="searchForm.maxAmount" placeholder="最大" style="width:100px" size="small" class="m-l-10" />
+          <el-input v-model.number="searchForm.minAmount" placeholder="最小" style="width:95px" size="small" class="m-l-10" />
+          <el-input v-model.number="searchForm.maxAmount" placeholder="最大" style="width:95px" size="small" class="m-l-10" />
         </el-col>
         <el-col :span="7">
-          <el-button type="primary" size="small" @click="searchList">搜索</el-button>
-          <el-button size="small" class="m-l-10" @click="resetList">重置</el-button>
+          <el-button type="primary" size="small" style="width: 30%" @click="searchList">搜索</el-button>
+          <el-button size="small" class="m-l-10" style="width: 30%" @click="resetList">重置</el-button>
         </el-col>
       </el-row>
     </el-card>
